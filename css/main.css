@@ -1,0 +1,285 @@
+
+/**
+ * Fonts
+ */
+@font-face {
+	font-family: Helvetica;
+	font-style: normal;
+	font-weight: normal;
+}
+
+/**
+ * Global styles
+ */
+html, body {
+	font-family: Helvetica, Arial, sans-serif;
+	color: #222222;
+	font-size: 12px;
+	overflow: hidden;
+	height: 100%;
+}
+
+a, a:hover {
+	text-decoration: none;
+	padding: 1px;
+	transition: all .08s linear;
+	-o-transition: all .08s linear;
+	-moz-transition: all .08s linear;
+	-webkit-transition: all .08s linear;
+}
+
+
+/**
+ * Main canvas
+ */
+#game {
+	position: relative;
+	left: 50%;
+	top: 50%;
+	margin-left: -500px;
+	margin-top: -330px;
+	z-index: 1;
+}
+
+canvas {
+	cursor: crosshair;
+	background-color: #111111;
+	border: 6px #333333 solid;
+	border-radius: 4px;
+	display: none;
+}
+
+header, footer, section {
+	display: block;
+}
+
+/**
+ *
+ */
+header {
+	margin: 0;
+	padding: 0 8px 8px 8px;
+	background-color: rgba( 0, 0, 0, 0.5 );
+	color: #eee;
+	overflow: hidden;
+	width: 100%;
+	height: 27px;
+	z-index: 5;
+	position: relative;
+	transition: height .22s ease-out;
+	-o-transition: height .22s ease-out;
+	-moz-transition: height .22s ease-out;
+	-webkit-transition: height .22s ease-out;
+}
+
+	header.open {
+		height: 200px;
+		-webkit-box-shadow: 0 1px 6px #000;
+	}
+
+	header h1 {
+		font-family: Helvetica, Arial, sans-serif;
+		float: left;
+	}
+
+	header .header-instruction {
+		font-size: 10px;
+		font-style: italic;
+		color: #999;
+		float: left;
+		margin: 13px 0 0 15px;
+		transition: opacity .18s linear;
+		-o-transition: opacity .18s linear;
+		-moz-transition: opacity .18s linear;
+		-webkit-transition: opacity .18s linear;
+	}
+
+		header.open .header-instruction {
+			opacity: 0;
+		}
+
+	header div.extra {
+		margin: 45px 0 0 20px;
+		clear: both;
+		transition: opacity .18s linear;
+		-o-transition: opacity .18s linear;
+		-moz-transition: opacity .18s linear;
+		-webkit-transition: opacity .18s linear;
+	}
+
+		header.open div.extra {
+
+		}
+
+		header div.extra h3 {
+			margin-bottom: 10px;
+		}
+
+		header a {
+			padding: 2px 4px 2px 2px;
+			color: #999;
+
+			transition: all .1s ease-in;
+			-o-transition: all .1s ease-out;
+			-moz-transition: all .1s ease-out;
+			-webkit-transition: all .1s ease-out;
+		}
+			header a:hover {
+				padding: 2px 4px 2px 2px;
+				color: #ddd;
+				background-color: #333;
+				border-radius: 1px;
+			}
+
+		header section {
+			float: left;
+			padding: 0 25px;
+			border-left: 1px #333 solid;
+			height: 140px;
+		}
+		#affiliation {
+		}
+
+			#affiliation img {
+				margin-top: 4px;
+			}
+			#affiliation a {
+				padding: 0px;
+			}
+			#affiliation a:hover {
+				padding: 0px;
+			}
+
+/**
+ * Shared for game UI.
+ */
+div.ui {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #999999;
+	text-align: left;
+	padding: 8px;
+	background-color: rgba(0,0,0,0.5);
+	border-radius: 4px;
+	float: left;
+}
+
+/**
+ * Game Status
+ */
+#game-status {
+		width: 984px;
+		height: 15px;
+		padding: 8px;
+		display: none;
+		position: absolute;
+		z-index: 2;
+	}
+
+		#game-status span {
+			color: #bbbbbb;
+			font-weight: bold;
+			margin-right: 5px;
+		}
+
+		#game-status .fps {
+			float: right;
+		}
+
+
+/**
+ * Game Panels
+ */
+#game-panels {
+	width: 1000px;
+	position: absolute;
+	z-index: 3;
+	display: none;
+}
+
+	#game-panels div.ui h2 {
+		margin-bottom: 20px;
+		color: #eeeeee;
+	}
+
+	#game-panels div.ui ul.instructions {
+		margin: 10px 0;
+	}
+
+	#game-panels div.ui ul.instructions li {
+		margin: 0 0 2px 0;
+	}
+
+	#game-panels div.ui #level-selector {
+		margin: 20px 0;
+		font-size: 11px;
+	}
+
+		#game-panels div.ui #level-selector span {
+
+		}
+
+		#game-panels div.ui #level-selector ul.levels {
+			margin: 10px 0;
+			display: inline;
+			padding: 4px;
+		}
+
+		#game-panels div.ui #level-selector ul.levels li {
+			display: inline;
+			margin: 1px;
+			padding: 5px;
+			background-color: #333;
+			cursor: pointer;
+			border-radius: 1px;
+			color: #fff;
+			transition: all .1s ease-out;
+			-o-transition: all .1s ease-out;
+			-moz-transition: all .1s ease-out;
+			-webkit-transition: all .1s ease-out;
+		}
+
+			#game-panels div.ui #level-selector ul.levels li.unlocked:hover {
+				background: #555;
+			}
+
+			#game-panels div.ui #level-selector ul.levels li.selected {
+				cursor: default;
+				background: #bb2222;
+				padding: 5px 9px;
+			}
+
+			#game-panels div.ui #level-selector ul.levels li.locked {
+				opacity: 0.5;
+				cursor: default;
+				color: #555;
+			}
+
+	#game-panels div.ui a {
+		outline: none;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 38px;
+		text-decoration: none;
+		color: #bbbbbb;
+		padding: 2px;
+		display: block;
+		transition: all .18s linear;
+		-o-transition: all .18s linear;
+		-moz-transition: all .18s linear;
+		-webkit-transition: all .18s linear;
+	}
+
+	#game-panels div.ui a:hover {
+		color: #ffffff;
+		background-color: #000000;
+		transition: all .18s linear;
+		-o-transition: all .18s linear;
+		-moz-transition: all .18s linear;
+		-webkit-transition: all .18s linear;
+	}
+
+	#message {
+		padding: 16px;
+		margin-top: 10px;
+		width: 225px;
+	}
