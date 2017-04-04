@@ -10,32 +10,6 @@ html, body {
 	height: 100%;
 }
 
-a, a:hover {
-	text-decoration: none;
-	padding: 1px;
-	transition: all .08s linear;
-	-o-transition: all .08s linear;
-	-moz-transition: all .08s linear;
-	-webkit-transition: all .08s linear;
-}
-
-#game {
-	position: relative;
-	left: 50%;
-	top: 50%;
-	margin-left: -500px;
-	margin-top: -317px;
-	z-index: 1;
-}
-
-canvas {
-	cursor: crosshair;
-	background-color: #cdcbbd;
-	border: 0px;
-	border-radius: 4px;
-	display: none;
-}
-
 header {
 	margin: 0;
 	padding: 0 8px 8px 8px;
@@ -78,6 +52,15 @@ header h1 {
 		color: #555;
 }
 
+#game {
+	position: relative;
+	left: 50%;
+	top: 50%;
+	margin-left: -500px;
+	margin-top: -317px;
+	z-index: 1;
+}
+
 div.ui {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10px;
@@ -108,13 +91,13 @@ div.ui {
 	font-size: 11px;
 }
 
-#game-panels div.ui #level-selector ul.levels {
+#game-panels div.ui #level-selector ul {
 	margin: 10px 0;
 	display: inline;
 	padding: 4px;
 }
 
-#game-panels div.ui #level-selector ul.levels li {
+#level-selector ul li {
 	display: inline;
 	margin: 1px;
 	padding: 5px;
@@ -128,17 +111,17 @@ div.ui {
 	-webkit-transition: all .1s ease-out;
 }
 
-#game-panels div.ui #level-selector ul.levels li.unlocked:hover {
+#level-selector ul li.unlocked:hover {
 	background: #555;
 }
 
-#game-panels div.ui #level-selector ul.levels li.selected {
+#level-selector ul li.selected {
 	cursor: default;
 	background: #5098a9;
 	padding: 5px 9px;
 }
 
-#game-panels div.ui #level-selector ul.levels li.locked {
+#level-selector ul li.locked {
 	opacity: 0.5;
 	cursor: default;
 	color: #555;
@@ -170,4 +153,14 @@ div.ui {
 	padding: 16px;
 	margin-top: 10px;
 	width: 225px;
+}
+
+canvas {
+	width: 1000px;
+	height: 600px;
+	cursor: crosshair;
+	background-color: #cdcbbd;
+	border: 0px;
+	border-radius: 4px;
+	display: block;
 }
