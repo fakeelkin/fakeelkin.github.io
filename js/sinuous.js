@@ -1,3 +1,20 @@
+const DEFAULT_COLOR = "#fff";
+const CHILD_COLOR = "#fff";
+const TAIL_COLOR = "#777";
+const HEAD_COLOR = "#444";
+const POINT_COLOR = "#000";
+const DEATH_COLOR = "#333";
+const G_COLOR = "#fff";
+const S_COLOR = "#fff";
+const COLOR_1 = "#fff";
+const T_COLOR = "#fff";
+const M_COLOR = "#fff";
+const FONT_COLOR = "#000";
+const S_EFFECT_COLOR_1 = "#fff";
+const S_EFFECT_COLOR_2 = "#333";
+const G_EFFECT_COLOR_1 = "rgba(255, 255, 255, 0.8)";
+const G_EFFECT_COLOR_2 = "rgba(255, 255, 255, 0)";
+
 var UserProfile = {
         isOnline: navigator.onLine,
         isAuthenticated: !1,
@@ -107,7 +124,7 @@ var SinuousWorld = new function() {
     }*/
 
     function Na(h) {
-        !1 == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = pa, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
+        !1 == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = ia-1, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
             "none", w.style.display = "block", Q = (new Date).getTime());
         /*UserProfile.isTouchDevice() ||*/ h.preventDefault()
     }
@@ -311,12 +328,12 @@ var SinuousWorld = new function() {
             a.sizefactor = Math.max(Math.min(a.sizefactor, 1), 0);
             a.gravitywarped ? (0.99995 < a.gravityfactor && (a.gravitywarped = !1), a.gravityfactor += 0.04 * (1 - a.gravityfactor)) : (0.12 > a.gravityfactor && (a.gravityfactor = 0), a.gravityfactor += 0.014 * (0 - a.gravityfactor));
             a.gravityfactor = Math.max(Math.min(a.gravityfactor, 1), 0);
-            if (0 < a.shield && (100 < a.shield || 0 != a.shield % 3)) d = a.size * (Math.min(a.shield, 100) / 50), b.beginPath(), b.fillStyle = "#167a66", b.strokeStyle = "#00ffcc", b.arc(a.position.x, a.position.y, d, 0, 2 * Math.PI, !0), b.fill(), b.stroke(), C(a.position.x, a.position.y, d + 2);
-            0 < a.gravityfactor && (f = a.gravityfactor * Aa, d = b.createRadialGradient(a.position.x, a.position.y, 0, a.position.x, a.position.y, f), d.addColorStop(0.1, "rgba(0, 70, 70, 0.8)"), d.addColorStop(0.8, "rgba(0, 70, 70, 0)"),
+            if (0 < a.shield && (100 < a.shield || 0 != a.shield % 3)) d = a.size * (Math.min(a.shield, 100) / 50), b.beginPath(), b.fillStyle = S_EFFECT_COLOR_1, b.strokeStyle = S_EFFECT_COLOR_2, b.arc(a.position.x, a.position.y, d, 0, 2 * Math.PI, !0), b.fill(), b.stroke(), C(a.position.x, a.position.y, d + 2);
+            0 < a.gravityfactor && (f = a.gravityfactor * Aa, d = b.createRadialGradient(a.position.x, a.position.y, 0, a.position.x, a.position.y, f), d.addColorStop(0.1, G_EFFECT_COLOR_1), d.addColorStop(0.8, G_EFFECT_COLOR_2),
                 b.beginPath(), b.fillStyle = d, b.arc(a.position.x, a.position.y, f, 0, 2 * Math.PI, !0), b.fill(), C(a.position.x, a.position.y, f));
             for (; 60 > a.trail.length - 1;) a.trail.push(new Point(a.position.x, a.position.y));
             b.beginPath();
-            b.strokeStyle = j ? "333333" : "#648d93";
+            b.strokeStyle = j ? "333333" : TAIL_COLOR;
             b.lineWidth = 2;
             var q = new Region;
             d = 0;
@@ -330,13 +347,13 @@ var SinuousWorld = new function() {
             f = 0;
             for (d = a.trail.length - 1; 0 < d; d--) {
                 p = a.trail[d];
-                if (d == Math.round(51) || d == Math.round(45) || d == Math.round(39)) b.beginPath(), b.lineWidth = 0.5, b.fillStyle = j ? "#333333" : "#8ff1ff", b.arc(p.position.x, p.position.y, 2.5, 0, 2 * Math.PI, !0), b.fill(), C(p.position.x, p.position.y, 8), f++;
+                if (d == Math.round(51) || d == Math.round(45) || d == Math.round(39)) b.beginPath(), b.lineWidth = 0.5, b.fillStyle = j ? DEATH_COLOR : CHILD_COLOR , b.arc(p.position.x, p.position.y, 2.5, 0, 2 * Math.PI, !0), b.fill(), C(p.position.x, p.position.y, 8), f++;
                 if (f == a.lives) break
             }
             60 < a.trail.length && a.trail.shift();
             b.beginPath();
             b.fillStyle =
-                j ? "#333333" : "#8ff1ff";
+                j ? DEATH_COLOR : HEAD_COLOR;
             b.arc(a.position.x, a.position.y, a.size / 2, 0, 2 * Math.PI, !0);
             b.fill();
             C(a.position.x, a.position.y, a.size + 6)
@@ -362,7 +379,7 @@ var SinuousWorld = new function() {
                 continue
             } else j < 0.5 * (a.size + p.size) && 0 == a.flicker && (0 < a.lives ? (L(a.position, 4), a.lives--, a.flicker += 60, u.splice(d, 1), d--) : (L(a.position, 10), qa()));
             b.beginPath();
-            b.fillStyle = "#ff0000";
+            b.fillStyle = POINT_COLOR;
             b.arc(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size / 2, 0, 2 * Math.PI, !0);
             b.fill();
             C(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size);
@@ -381,16 +398,17 @@ var SinuousWorld = new function() {
                 d--
             } else if (p.position.x < -p.size || p.position.y > i.height + p.size) z.splice(d, 1), d--;
             j = "";
-            f = "#000";
-            p.type === Y ? (j = "S", f = "#007766") : p.type === N ? (j = "1", f = "#009955") :
-                p.type === Z ? (j = "G", f = "#225599") : p.type === ja ? (j = "T", f = "#665599") : p.type === ka && (j = "M", f = "#acac00");
+            f = DEFAULT_COLOR;
+            p.type === Y ? (j = "S", f = S_COLOR) : p.type === N ? (j = "1", f = COLOR_1) :
+                p.type === Z ? (j = "G", f = G_COLOR) : p.type === ja ? (j = "T", f = T_COLOR) :
+                p.type === ka && (j = "M", f = M_COLOR);
             b.beginPath();
             b.fillStyle = f;
             b.arc(p.position.x, p.position.y, p.size / 2, 0, 2 * Math.PI, !0);
             b.fill();
             b.save();
             b.font = "bold 12px Arial";
-            b.fillStyle = "#ffffff";
+            b.fillStyle = FONT_COLOR;
             b.fillText(j, p.position.x - 0.5 * b.measureText(j).width, p.position.y + 4);
             b.restore();
             C(p.position.x, p.position.y, p.size);
@@ -404,14 +422,14 @@ var SinuousWorld = new function() {
             z.push(Ba(h))
         }
         1 == a.shield && s /*&& SinuousSound.play(SinuousSound.CALM)*/;
-        for (d = 0; d < U.length; d++) p = U[d], p.velocity.x += 0.04 * (t - p.velocity.x), p.velocity.y += 0.04 * (g - p.velocity.y), p.position.x += p.velocity.x, p.position.y += p.velocity.y, p.alpha -= 0.02, b.fillStyle = "rgba(255,255,255," + Math.max(p.alpha, 0) + ")", b.fillRect(p.position.x, p.position.y, 1, 1), C(p.position.x, p.position.y, 2), 0 >= p.alpha && U.splice(d, 1);
+        for (d = 0; d < U.length; d++) p = U[d], p.velocity.x += 0.04 * (t - p.velocity.x), p.velocity.y += 0.04 * (g - p.velocity.y), p.position.x += p.velocity.x, p.position.y += p.velocity.y, p.alpha -= 0.02, b.fillStyle = /*цвет всплесков*/"rgba(255,255,255," + Math.max(p.alpha, 0) + ")", b.fillRect(p.position.x, p.position.y, 1, 1), C(p.position.x, p.position.y, 2), 0 >= p.alpha && U.splice(d, 1);
         for (d = 0; d < aa.length; d++) p = aa[d], p.position.x += t * p.force, p.position.y +=
-            g * p.force, p.position.y -= 1, h = b.measureText(p.text).width, l = p.position.x - 0.5 * h, b.save(), b.font = "10px Arial", b.fillStyle = "rgba( 255, 255, 255, " + p.alpha + " )", b.fillText(p.text, l, p.position.y), b.restore(), V(l - 5, p.position.y - 12, h + 8, 22), p.alpha *= 0.96, 0.05 > p.alpha && (aa.splice(d, 1), d--);
+            g * p.force, p.position.y -= 1, h = b.measureText(p.text).width, l = p.position.x - 0.5 * h, b.save(), b.font = "10px Arial", b.fillStyle = "rgba( 255, 255, 255, " + p.alpha + " )"/*цвет очков*/, b.fillText(p.text, l, p.position.y), b.restore(), V(l - 5, p.position.y - 12, h + 8, 22), p.alpha *= 0.96, 0.05 > p.alpha && (aa.splice(d, 1), d--);
         n.message && "" !== n.message && (n.progress += 0.05 * (n.target - n.progress), 0.9999999 < n.progress ? n.target = 0 : 0 == n.target && 0.05 > n.progress && (n.message = ""), b.save(), b.font = "bold 22px Arial", p = {
             x: i.width - b.measureText(n.message).width -
                 15,
             y: i.height + 40 - 55 * n.progress
-        }, b.translate(p.x, p.y), b.fillStyle = "rgba( 0, 0, 0, " + 0.4 * n.progress + " )", b.fillRect(-15, -30, 200, 100), b.fillStyle = "rgba( 255, 255, 255, " + n.progress + " )", b.fillText(n.message, 0, 0), V(p.x - 15, p.y - 30, 200, 100), b.restore());
+        }, b.translate(p.x, p.y), b.fillStyle = /*цвет уровня*/"rgba( 0, 0, 0, " + 0.4 * n.progress + " )", b.fillRect(-15, -30, 200, 100), b.fillStyle = "rgba( 255, 255, 255, " + n.progress + " )", b.fillText(n.message, 0, 0), V(p.x - 15, p.y - 30, 200, 100), b.restore());
         if (s) {
             if (h = I > G[r - 1].duration) r < G.length ? (r++, I = 0, o.unlockedLevels = Math.max(o.unlockedLevels, r), ba(), P(), h = !0) : h = !1;
             h && (n.message = "LEVEL " + r + "!", n.progress = 0, n.target = 1);
@@ -449,7 +467,7 @@ var SinuousWorld = new function() {
         this.trail = [];
         this.size = 8;
         this.shield = 0;
-        this.lives = pa;
+        this.lives = ia-1;
         this.flicker = 0;
         this.gravitywarped = !1;
         this.gravityfactor = 0;
@@ -486,11 +504,10 @@ var SinuousWorld = new function() {
         ya = 600,
         M = 60,
         za = 0.25,
-        pa = 2,
         ia = 3,
         Aa = 120,
-        Ha = "Turn audio on",
-        Ia = "Turn audio off",
+        //Ha = "Turn audio on",
+        //Ia = "Turn audio off",
         Y = "shield",
         N = "life",
         Z = "gravitywarp",
@@ -676,16 +693,8 @@ window.addEventListener("load", function() {
         window.applicationCache.status == window.applicationCache.UPDATEREADY && (window.applicationCache.swapCache(), confirm("A new version of the game is available. Load it?") && window.location.reload())
     }, !1)
 });
-$.post("/php/login-verify.php", "").success(function(c) {
-    UserProfile.isOnline = !0;
-    "false" == c ? (UserProfile.isAuthenticated = !1, document.getElementById("highscore-list").innerHTML += '<p class="auth out">You need to <a href="/php/login.php">sign in</a> with a Google account to be eligible for the leaderboard.</p>') : (UserProfile.isAuthenticated = !0, document.getElementById("highscore-list").innerHTML += '<p class="auth in">Logged in as ' +
-        c + '. <a href="/php/logout.php">Sign out?</a></p>');
-    SinuousWorld.initialize()
-}).error(function() {
-    UserProfile.isOnline = !1;
-    UserProfile.isAuthenticated = !1;
-    SinuousWorld.initialize()
-});
+
+SinuousWorld.initialize();
 
 /*function sendToJavaScript(c) {
     c == "SoundController ready and loaded!" && SinuousSound.play(SinuousSound.IDLE)

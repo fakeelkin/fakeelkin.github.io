@@ -4,7 +4,7 @@
 
 html, body {
 	font-family: Helvetica, Arial, sans-serif;
-	background-color: #dcb4aa;
+	background-color: #fff;
 	font-size: 12px;
 	overflow: hidden;
 	height: 100%;
@@ -13,8 +13,8 @@ html, body {
 header {
 	margin: 0;
 	padding: 0 8px 8px 8px;
-	background-color: rgba( 171, 168, 151, 0.5 );
-	color: #eee;
+	background-color: rgba( 0, 0, 0, 1 );
+	color: #999;
 	overflow: hidden;
 	width: 100%;
 	height: 27px;
@@ -120,7 +120,7 @@ div.ui {
 
 #level-selector ul li.selected {
 	cursor: default;
-	background: #5098a9;
+	background: #999;
 	padding: 5px 9px;
 }
 
@@ -156,7 +156,7 @@ canvas {
 	width: 1000px;
 	height: 600px;
 	cursor: crosshair;
-	background-color: #cdcbbd;
+	background-color: #999;
 	border: 0px;
 	border-radius: 4px;
 	display: block;
