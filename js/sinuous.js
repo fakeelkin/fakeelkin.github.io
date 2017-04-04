@@ -1,16 +1,3 @@
-/**
- * Sinuous v1.1
- * http://sinuousgame.com/
- *
- * Copyright 2011, Hakim El Hattab
- * All Rights Reserved
- *
- * @author Hakim El Hattab (http://hakim.se | @hakimel)
- *
- * History:
- * 1.1: Canvas now only clears explicitly invalidated regions
- * 1.0: Initial release
- */
 var UserProfile = {
         isOnline: navigator.onLine,
         isAuthenticated: !1,
@@ -22,42 +9,6 @@ var UserProfile = {
         },
         suportsLocalStorage: function() {
             return "localStorage" in window && null !== window.localStorage
-        }
-    },
-    SinuousSound = {
-        IDLE: "MusicIdleARR",
-        CALM: "MusicCalmARR",
-        FUN: "MusicFunARR",
-        FX_EXPLOSION: "fx_explosion",
-        FX_BREAK: "fx_break",
-        FX_BUBBLE: "fx_bubble",
-        isMute: !1,
-        isReady: !1,
-        initialize: function() {
-            var c = document.createElement("div");
-            c.setAttribute("id", "sound");
-            document.body.appendChild(c);
-            UserProfile.supportsAudio() && swfobject.embedSWF("/assets/swf/sound.swf", "sound", "1", "1", "9.0.0", "", {}, {
-                allowScriptAccess: "always"
-            }, {
-                id: "soundSWF"
-            }, this.embedFlashStatusHandler)
-        },
-        embedFlashStatusHandler: function(c) {
-            c.success && (SinuousSound.isReady = !0, SinuousSound.isMute ? SinuousSound.mute() : SinuousSound.unmute())
-        },
-        play: function(c) {
-            if (UserProfile.supportsAudio() && SinuousSound.isReady && document.getElementById("soundSWF") && "none" != document.getElementById("soundSWF").style.display) try {
-                document.getElementById("soundSWF").sendToActionScript(c)
-            } catch (k) {}
-        },
-        mute: function() {
-            this.isMute = !0;
-            this.isReady && document.getElementById("soundSWF") && (document.getElementById("soundSWF").style.display = "none")
-        },
-        unmute: function() {
-            this.isMute = !1;
-            this.isReady && document.getElementById("soundSWF") && (document.getElementById("soundSWF").style.display = "block")
         }
     },
     AJAX = {
@@ -156,14 +107,14 @@ var SinuousWorld = new function() {
     }
 
     function Na(h) {
-        !1 == s && (SinuousSound.play(SinuousSound.CALM), s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = pa, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
+        !1 == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = pa, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
             "none", w.style.display = "block", Q = (new Date).getTime());
         UserProfile.isTouchDevice() || h.preventDefault()
     }
 
     function qa() {
-        SinuousSound.play(SinuousSound.IDLE);
-        SinuousSound.play(SinuousSound.FX_EXPLOSION);
+        /*SinuousSound.play(SinuousSound.IDLE);
+        SinuousSound.play(SinuousSound.FX_EXPLOSION);*/
         s = !1;
         ra = (new Date).getTime() - Q;
         Oa();
@@ -401,7 +352,7 @@ var SinuousWorld = new function() {
                 if (0 < a.gravityfactor) q = Math.atan2(p.position.y - a.position.y, p.position.x - a.position.x), f = a.gravityfactor * Aa, j < f && (p.offset.x += 0.2 * (Math.cos(q) *
                     (f - j) - p.offset.x), p.offset.y += 0.2 * (Math.sin(q) * (f - j) - p.offset.y));
                 else if (0 < a.shield && j < 0.5 * (4 * a.size + p.size)) {
-                SinuousSound.play(SinuousSound.FX_BREAK);
+                //SinuousSound.play(SinuousSound.FX_BREAK);
                 L(p.position, 10);
                 u.splice(d, 1);
                 d--;
@@ -422,10 +373,10 @@ var SinuousWorld = new function() {
         for (d = 0; d < z.length; d++) {
             p = z[d];
             if (p.distanceTo(a.position) < 0.5 * (a.size + p.size) && s) {
-                SinuousSound.play(SinuousSound.FX_BUBBLE);
-                p.type == Y ? (SinuousSound.play(SinuousSound.FUN), a.shield = 300) : p.type == N ? a.lives < ia && (X("LIFE UP!", p.clonePosition(), p.force), a.lives = Math.min(a.lives + 1, ia)) : p.type == Z ? a.gravitywarped = !0 : p.type == ja ? a.timewarped = !0 : p.type == ka && (a.sizewarped = !0);
+                //SinuousSound.play(SinuousSound.FX_BUBBLE);
+                p.type == Y ? (/*SinuousSound.play(SinuousSound.FUN), */a.shield = 300) : p.type == N ? a.lives < ia && (X("LIFE UP!", p.clonePosition(), p.force), a.lives = Math.min(a.lives + 1, ia)) : p.type == Z ? a.gravitywarped = !0 : p.type == ja ? a.timewarped = !0 : p.type == ka && (a.sizewarped = !0);
                 p.type != N && (m += 50 * l, v += 50 * l, X(Math.ceil(50 * l), p.clonePosition(), p.force));
-                for (j = 0; j < u.length; j++) e = u[j], 100 > e.distanceTo(p.position) && (SinuousSound.play(SinuousSound.FX_BREAK), L(e.position, 10), u.splice(j, 1), j--, m += 20 * l, v += 20 * l, X(Math.ceil(20 * l), e.clonePosition(), e.force));
+                for (j = 0; j < u.length; j++) e = u[j], 100 > e.distanceTo(p.position) && (/*SinuousSound.play(SinuousSound.FX_BREAK),*/ L(e.position, 10), u.splice(j, 1), j--, m += 20 * l, v += 20 * l, X(Math.ceil(20 * l), e.clonePosition(), e.force));
                 z.splice(d, 1);
                 d--
             } else if (p.position.x < -p.size || p.position.y > i.height + p.size) z.splice(d, 1), d--;
@@ -452,7 +403,7 @@ var SinuousWorld = new function() {
                 new la; h.type == N && a.lives >= ia;) h.randomizeType();
             z.push(Ba(h))
         }
-        1 == a.shield && s && SinuousSound.play(SinuousSound.CALM);
+        1 == a.shield && s /*&& SinuousSound.play(SinuousSound.CALM)*/;
         for (d = 0; d < U.length; d++) p = U[d], p.velocity.x += 0.04 * (t - p.velocity.x), p.velocity.y += 0.04 * (g - p.velocity.y), p.position.x += p.velocity.x, p.position.y += p.velocity.y, p.alpha -= 0.02, b.fillStyle = "rgba(255,255,255," + Math.max(p.alpha, 0) + ")", b.fillRect(p.position.x, p.position.y, 1, 1), C(p.position.x, p.position.y, 2), 0 >= p.alpha && U.splice(d, 1);
         for (d = 0; d < aa.length; d++) p = aa[d], p.position.x += t * p.force, p.position.y +=
             g * p.force, p.position.y -= 1, h = b.measureText(p.text).width, l = p.position.x - 0.5 * h, b.save(), b.font = "10px Arial", b.fillStyle = "rgba( 255, 255, 255, " + p.alpha + " )", b.fillText(p.text, l, p.position.y), b.restore(), V(l - 5, p.position.y - 12, h + 8, 22), p.alpha *= 0.96, 0.05 > p.alpha && (aa.splice(d, 1), d--);
@@ -667,7 +618,7 @@ var SinuousWorld = new function() {
             D.addEventListener("mouseover", La, !1);
             D.addEventListener("mouseout", Ma, !1);
             window.addEventListener("resize", wa, !1);
-            SinuousSound.initialize();
+            //SinuousSound.initialize();
             if (UserProfile.suportsLocalStorage()) {
                 var c = parseInt(localStorage.unlockedLevels),
                     f = parseInt(localStorage.selectedLevel),
@@ -698,11 +649,11 @@ var SinuousWorld = new function() {
     };
     this.pause = function() {
         ma = !0;
-        SinuousSound.mute()
+        //SinuousSound.mute()
     };
     this.resume = function() {
         ma = !1;
-        UserProfile.suportsLocalStorage() && "false" == localStorage.mute && (SinuousSound.unmute(), SinuousSound.play(SinuousSound.CALM));
+        UserProfile.suportsLocalStorage() && "false" == localStorage.mute /*&& (SinuousSound.unmute(), SinuousSound.play(SinuousSound.CALM))*/;
         fa()
     };
     na.prototype = new Point;
@@ -736,6 +687,6 @@ FACEBOOK_MODE ? (UserProfile.isOnline = !0, UserProfile.isAuthenticated = !0, Si
     SinuousWorld.initialize()
 });
 
-function sendToJavaScript(c) {
+/*function sendToJavaScript(c) {
     c == "SoundController ready and loaded!" && SinuousSound.play(SinuousSound.IDLE)
-};
+};*/

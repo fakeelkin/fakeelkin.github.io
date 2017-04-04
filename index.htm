@@ -1,64 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-		<meta charset="UTF-8">
-	  <meta name="viewport" content="width = 450">
-  	<title>Elkin's Game</title>
-		<script>
-			if( navigator.userAgent.match( /iphone|ipad|ipod/gi ) ) window.location = '/mobile';
-			var sc = 7596;
-			var FACEBOOK_MODE = false;
-		</script>
-		<link href="css/reset.css" rel="stylesheet" media="screen">
-		<link href="css/main.css" rel="stylesheet" media="screen">
-	</head>
-    <body>
-    	<header class="">
-    		<h1>Sinuous</h1>
-    		<div class="extra">
-	    			<h3>Settings</h3>
-	    			<ul>
-	    				<li><a id="reset-button" href="#">Reset game</a></li>
-	    			</ul>
-    		</div>
-    	</header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = 450">
+    <title>Elkin's Game</title>
+    <script>
+        if (navigator.userAgent.match(/iphone|ipad|ipod/gi)) window.location = '/mobile';
+        var sc = 7596;
+        var FACEBOOK_MODE = false;
+    </script>
+    <link href="css/reset.css" rel="stylesheet" media="screen">
+    <link href="css/main.css" rel="stylesheet" media="screen">
+</head>
 
-    	<!-- Wraps all game elements including UI panels and the canvas the game is rendered on -->
-    	<div id="game">
-	    	<!-- Displays status information (score, time, fps) about the current game -->
-	    	<div id="game-status" class="ui" style="left: 6px; top: 6px; display: block;">Level: <span>7</span> Score: <span>8818</span> Time: <span>147.31s</span></div>
-	    	<!-- Holds the main game UI such as high score lists and instructions -->
-			<div id="game-panels" style="left: 6px; top: 150px; display: block;">
-				<div id="message" class="ui">
-					<h2 id="title">Game Over! (8818 points)</h2>
-					<ul class="instructions">
-						<li>1. Avoid red dots.</li>
-						<li>2. Hit other dots for boosts.</li>
-						<li>3. Score extra points by moving around a lot.</li>
-						<li>4. Stay alive.</li>
-					</ul>
-					<a href="#" id="start-button">Start</a>
-					<div id="level-selector">
-						<span>Level:</span>
-						<ul class="levels"><li data-level="1" class="selected">1</li><li data-level="2" class="unlocked">2</li><li data-level="3" class="unlocked">3</li><li data-level="4" class="unlocked">4</li><li data-level="5" class="unlocked">5</li><li data-level="6" class="unlocked">6</li><li data-level="7" class="unlocked">7</li><li data-level="8" class="locked">8</li><li data-level="9" class="locked">9</li></ul>
-					</div>
-				</div>
-				
-				<div id="highscore-win" class="ui" style="display: none;">
-					<h2 id="highscore-place"></h2>
-					<p>Something to identify you by</p>
-					<input id="highscore-input" name="alias" maxlength="10" type="text">
-					<a id="highscore-submit" href="#">Go</a>
-				</div>
-			</div>
-			<canvas id="world" width="1000" height="600" style="display: block;"></canvas>
-		</div>
+<body>
+    <header class="">
+        <h1>Sinuous</h1>
+        <div class="extra">
+            <h3>Settings</h3>
+            <ul>
+                <li><a id="reset-button" href="#">Reset game</a></li>
+            </ul>
+        </div>
+    </header>
+    <div id="game">
+        <div id="game-status" class="ui" style="left: 6px; top: 6px; display: block;">Level: <span>7</span> Score: <span>8818</span> Time: <span>147.31s</span></div>
+        <div id="game-panels" style="left: 6px; top: 150px; display: block;">
+            <div id="message" class="ui">
+                <h2 id="title">Game Over! (8818 points)</h2>
+                <ul class="instructions">
+                    <li>1. Avoid red dots.</li>
+                    <li>2. Hit other dots for boosts.</li>
+                    <li>3. Score extra points by moving around a lot.</li>
+                    <li>4. Stay alive.</li>
+                </ul>
+                <a href="#" id="start-button">Start</a>
+                <div id="level-selector">
+                    <span>Level:</span>
+                    <ul class="levels">
+                        <li data-level="1" class="selected">1</li>
+                        <li data-level="2" class="unlocked">2</li>
+                        <li data-level="3" class="unlocked">3</li>
+                        <li data-level="4" class="unlocked">4</li>
+                        <li data-level="5" class="unlocked">5</li>
+                        <li data-level="6" class="unlocked">6</li>
+                        <li data-level="7" class="unlocked">7</li>
+                        <li data-level="8" class="locked">8</li>
+                        <li data-level="9" class="locked">9</li>
+                    </ul>
+                </div>
+            </div>
 
+            <div id="highscore-win" class="ui" style="display: none;">
+                <h2 id="highscore-place"></h2>
+                <p>Something to identify you by</p>
+                <input id="highscore-input" name="alias" maxlength="10" type="text">
+                <a id="highscore-submit" href="#">Go</a>
+            </div>
+        </div>
+        <canvas id="world" width="1000" height="600" style="display: block;"></canvas>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script>
+        !window.jQuery && document.write(unescape('%3Cscript src="../js/libs/jquery-1.5.2.min.js"%3E%3C/script%3E'))
+    </script>
+    <!--<script src="js/swfobject.js"></script>-->
+    <script src="js/sinuous.js"></script>
+	</body>
 
-		<script src="js/jquery.js"></script>
-		<script>!window.jQuery && document.write(unescape('%3Cscript src="../js/libs/jquery-1.5.2.min.js"%3E%3C/script%3E'))</script>
-
-		<script src="js/swfobject.js"></script>
-		<script src="js/sinuous.js"></script>
-
-<object type="application/x-shockwave-flash" id="soundSWF" data="Sinuous%20-%20Avoid%20the%20red%20dots!_files/sound.swf" style="display: block;" width="1" height="1"><param name="allowScriptAccess" value="always"></object><iframe id="rufous-sandbox" scrolling="no" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: medium none;" title="Twitter analytics iframe" frameborder="0"></iframe></body></html>
+</html>
