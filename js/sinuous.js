@@ -108,7 +108,7 @@ var SinuousWorld = new function() {
 
     function Na(h) {
         !1 == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = pa, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
-            "none", /*w.style.display = "block",*/ Q = (new Date).getTime());
+            "none", w.style.display = "block", Q = (new Date).getTime());
         UserProfile.isTouchDevice() || h.preventDefault()
     }
 
@@ -122,11 +122,12 @@ var SinuousWorld = new function() {
         x.style.display = "block";
         m = Math.round(m);
         sa.innerHTML = "Game Over! (" + m + " points)";
-        scoreText = "Level: <span>" + r + "</span>";
-        scoreText += " Score: <span>" + Math.round(m) + "</span>";
-        scoreText += " Time: <span>" + Math.round(100 * (((new Date).getTime() -
+        scoreText = "<span>Last results:</span>";
+        scoreText += " Level <span>" + r + "</span>";
+        scoreText += " Score <span>" + Math.round(m) + "</span>";
+        scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() -
             Q) / 1E3)) / 100 + "s</span>";
-        //w.innerHTML = scoreText;
+        w.innerHTML = scoreText;
     }
 
     function P() {
@@ -238,7 +239,7 @@ var SinuousWorld = new function() {
         q.height = i.height;
         Math.max(0.5 * (window.innerHeight - i.height), 5);
         var a = 6;
-        UserProfile.isTouchDevice() ? (x.style.left = "0px", x.style.top = "0px"/*, w.style.left = "0px", w.style.top = "0px"*/) : (x.style.left = a + "px", x.style.top = Math.round(i.height / 4) + "px"/*, w.style.left = a + "px", w.style.top = a + "px"*/)
+        UserProfile.isTouchDevice() ? (x.style.left = "0px", x.style.top = "0px", w.style.left = "0px", w.style.top = "0px") : (x.style.left = a + "px", x.style.top = Math.round(i.height / 4) + "px", w.style.left = a + "px", w.style.top = a + "px")
     }
 
     function L(a, b, g) {
@@ -414,10 +415,11 @@ var SinuousWorld = new function() {
         if (s) {
             if (h = I > G[r - 1].duration) r < G.length ? (r++, I = 0, o.unlockedLevels = Math.max(o.unlockedLevels, r), ba(), P(), h = !0) : h = !1;
             h && (n.message = "LEVEL " + r + "!", n.progress = 0, n.target = 1);
-            scoreText = "Level: <span>" + r + "</span>";
-            scoreText += " Score: <span>" + Math.round(m) + "</span>";
-            scoreText += " Time: <span>" + Math.round(100 * (((new Date).getTime() - Q) / 1E3)) / 100 + "s</span>";
-            //w.innerHTML = scoreText
+            scoreText = "<span>Last results:</span>";
+            scoreText += " Level <span>" + r + "</span>";
+            scoreText += " Score <span>" + Math.round(m) + "</span>";
+            scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - Q) / 1E3)) / 100 + "s</span>";
+            w.innerHTML = scoreText
         }
         ma || requestAnimFrame(fa)
     }
@@ -585,7 +587,7 @@ var SinuousWorld = new function() {
         q = document.getElementById("world");
         //D = document.getElementsByTagName("header")[0];
         x = document.getElementById("game-panels");
-        //w = document.getElementById("game-status");
+        w = document.getElementById("game-status");
         //document.getElementById("message");
         J = document.getElementById("promotion");
         sa = document.getElementById("title");
@@ -634,7 +636,7 @@ var SinuousWorld = new function() {
             P();
             a = new na;
             wa();
-            UserProfile.isTouchDevice() && (/*w.style.width = i.width + "px",*/ q.style.border = "none", /*D.style.display = "none",*/ H.x *= 2, H.y *= 2);
+            UserProfile.isTouchDevice() && (w.style.width = i.width + "px", q.style.border = "none", /*D.style.display = "none",*/ H.x *= 2, H.y *= 2);
             fa();
             UserProfile.isOnline || S();
             q.style.display = "block";
