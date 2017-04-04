@@ -4,25 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width = 450">
     <title>Elkin's Game</title>
-    <script>
-        if (navigator.userAgent.match(/iphone|ipad|ipod/gi)) window.location = '/mobile';
-        var sc = 7596;
-        var FACEBOOK_MODE = false;
-    </script>
     <link href="css/reset.css" rel="stylesheet" media="screen">
     <link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 
 <body>
-    <header class="">
-        <div id="game-status" style="left: 6px; top: 6px; display: block;">
-            Level: <span>7</span> Score: <span>8818</span> Time: <span>147.31s</span>
-        </div>
+    <header>
     </header>
     <div id="game">
-        <div id="game-panels" style="left: 6px; top: 150px; display: block;">
+        <div id="game-panels">
             <div id="message" class="ui">
-                <h2 id="title">Game Over! (8818 points)</h2>
+                <h2 id="title">Let's play</h2>
                 <a href="#" id="start-button">Start</a>
                 <div id="level-selector">
                     <span>Level:</span>
@@ -38,25 +30,12 @@
                         <li data-level="9" class="locked">9</li>
                     </ul>
                 </div>
-                <div>
-                    <a id="reset-button" href="#">Reset game</a>
-                </div>
-            </div>
-
-            <div id="highscore-win" class="ui" style="display: none;">
-                <h2 id="highscore-place"></h2>
-                <p>Something to identify you by</p>
-                <input id="highscore-input" name="alias" maxlength="10" type="text">
-                <a id="highscore-submit" href="#">Go</a>
+                <a href="#" id="reset-button">Reset game</a>
             </div>
         </div>
         <canvas id="world" width="1000" height="600" style="display: block;"></canvas>
     </div>
     <script src="js/jquery.js"></script>
-    <script>
-        !window.jQuery && document.write(unescape('%3Cscript src="../js/libs/jquery-1.5.2.min.js"%3E%3C/script%3E'))
-    </script>
-    <!--<script src="js/swfobject.js"></script>-->
 		<script src="js/sinuous.js"></script>
 	</body>
 

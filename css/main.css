@@ -24,7 +24,7 @@ a, a:hover {
 	left: 50%;
 	top: 50%;
 	margin-left: -500px;
-	margin-top: -330px;
+	margin-top: -317px;
 	z-index: 1;
 }
 
@@ -50,7 +50,7 @@ header {
 	-o-transition: height .22s ease-out;
 	-moz-transition: height .22s ease-out;
 	-webkit-transition: height .22s ease-out;
-	display: block;
+	display: inline-block;
 }
 
 header h1 {
@@ -69,26 +69,13 @@ div.ui {
 	float: left;
 }
 
-#game-status {
-		width: 984px;
-		height: 15px;
-		padding: 8px;
-		display: none;
-		position: absolute;
-		z-index: 2;
-}
-
-#game-status span {
-		color: #777;
-		font-weight: bold;
-		margin-right: 5px;
-}
-
 #game-panels {
 	width: 1000px;
 	position: absolute;
 	z-index: 3;
-	display: none;
+	left: 6px;
+	top: 150px;
+	display: block;
 }
 
 #game-panels div.ui h2 {
@@ -139,12 +126,11 @@ div.ui {
 
 #game-panels div.ui a {
 	outline: none;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica;
 	font-size: 38px;
 	text-decoration: none;
 	color: #bbbbbb;
 	padding: 2px;
-	display: block;
 	transition: all .18s linear;
 	-o-transition: all .18s linear;
 	-moz-transition: all .18s linear;

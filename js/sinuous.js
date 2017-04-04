@@ -99,16 +99,16 @@ var SinuousWorld = new function() {
     }
 
     function La() {
-        s || D.setAttribute("class", "open")
+        s //|| D.setAttribute("class", "open")
     }
 
-    function Ma() {
+    /*function Ma() {
         D.setAttribute("class", "")
-    }
+    }*/
 
     function Na(h) {
         !1 == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = pa, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
-            "none", w.style.display = "block", Q = (new Date).getTime());
+            "none", /*w.style.display = "block",*/ Q = (new Date).getTime());
         UserProfile.isTouchDevice() || h.preventDefault()
     }
 
@@ -117,7 +117,7 @@ var SinuousWorld = new function() {
         SinuousSound.play(SinuousSound.FX_EXPLOSION);*/
         s = !1;
         ra = (new Date).getTime() - Q;
-        Oa();
+        //Oa();
         J && (J.style.display = "block");
         x.style.display = "block";
         m = Math.round(m);
@@ -126,7 +126,7 @@ var SinuousWorld = new function() {
         scoreText += " Score: <span>" + Math.round(m) + "</span>";
         scoreText += " Time: <span>" + Math.round(100 * (((new Date).getTime() -
             Q) / 1E3)) / 100 + "s</span>";
-        w.innerHTML = scoreText
+        //w.innerHTML = scoreText;
     }
 
     function P() {
@@ -146,7 +146,7 @@ var SinuousWorld = new function() {
         UserProfile.isOnline = !1
     }
 
-    function Qa() {
+    /*function Qa() {
         for (var a =
                 10 > f.length, b = 0; b < f.length; b++)
             if (m > f[b].score) {
@@ -154,55 +154,55 @@ var SinuousWorld = new function() {
                 break
             }
         a && (!T.value || " " == T.value ? alert("Name can not be empty.") : (Ra(), K.style.display = "none"))
-    }
+    }*/
 
-    function Oa() {
+    /*function Oa() {
         AJAX.post("/php/highscore.php", "m=ghs" + (A ? "&table=facebook" : ""), function(a) {
             f = eval(a);
             Sa()
         }, function() {
             S()
         })
-    }
+    }*/
 
-    function Ta() {
+    /*function Ta() {
         AJAX.post("/php/highscore.php", "m=ghs" + (A ? "&table=facebook" : ""), function(a) {
             f = eval(a);
             ca()
         }, function() {
             S()
         })
-    }
+    }*/
 
     function Ra() {
-        var a = T.value,
+        var /*a = T.value,*/
             b = Math.round(100 * (ra / 1E3)) / 100,
-            g = 3.14159265 * (m * m) * Math.max(a.length, 1),
-            a = "m=shs&n=" +
+            g = 3.14159265 * (m * m) * Math.max(a.length, 1);
+            /*var a = "m=shs&n=" +
             a + ("&s=" + g) + ("&d=" + b) + ("&sc=" + sc),
             a = a + ("&fc=" + Math.round(c)),
             a = a + ("&fs=" + Math.round(k)),
             a = a + ("&ms=" + Math.round(y)),
             a = a + ("&cs=" + Math.round(v)),
             a = a + ("&f=" + Math.round((da + ea + B) / 3)),
-            a = a + (A ? "&table=facebook" : "");
-        AJAX.post("/php/highscore.php", a, function(a) {
+            a = a + (A ? "&table=facebook" : "");*/
+        /*AJAX.post("/php/highscore.php", a, function(a) {
             f = eval(a);
             ca()
         }, function() {
             S()
-        })
+        })*/
     }
 
-    function ca() {
+    /*function ca() {
         if (f) {
             for (var a = "", b = 0; b < f.length; b++) a += "<li>", a += '<span class="place">' + (b + 1) + ".</span>", a += '<span class="name">' + f[b].name + "</span>", a += '<span class="score">' + f[b].score + " p</span>", a += '<span class="date">' +
                 f[b].date + "</span>", a += "</li>";
             ua.innerHTML = a
         }
-    }
+    }*/
 
-    function Sa() {
+    /*function Sa() {
         if (f && !1 == s && UserProfile.isAuthenticated) {
             for (var a = 1, b = 0; b < f.length; b++) f[b].score > m && a++;
             if (10 > a) {
@@ -210,11 +210,10 @@ var SinuousWorld = new function() {
                 va.innerHTML = "You made #" + a + " on the top list!";
             }
         }
-    }
+    }*/
 
     function Ua(a) {
-        A ? (E = a.clientX - $(q).offset().left, F = a.clientY - $(q).offset().top) :
-            (E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6, F = a.clientY - 0.5 * (window.innerHeight - i.height) - 6)
+        (E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6, F = a.clientY - 0.5 * (window.innerHeight - i.height) - 6)
     }
 
     function Va() {}
@@ -238,8 +237,8 @@ var SinuousWorld = new function() {
         q.width = i.width;
         q.height = i.height;
         Math.max(0.5 * (window.innerHeight - i.height), 5);
-        var a = A ? 0 : 6;
-        UserProfile.isTouchDevice() ? (x.style.left = "0px", x.style.top = "0px", w.style.left = "0px", w.style.top = "0px") : (x.style.left = a + "px", x.style.top = Math.round(i.height / 4) + "px", w.style.left = a + "px", w.style.top = a + "px")
+        var a = 6;
+        UserProfile.isTouchDevice() ? (x.style.left = "0px", x.style.top = "0px"/*, w.style.left = "0px", w.style.top = "0px"*/) : (x.style.left = a + "px", x.style.top = Math.round(i.height / 4) + "px"/*, w.style.left = a + "px", w.style.top = a + "px"*/)
     }
 
     function L(a, b, g) {
@@ -418,7 +417,7 @@ var SinuousWorld = new function() {
             scoreText = "Level: <span>" + r + "</span>";
             scoreText += " Score: <span>" + Math.round(m) + "</span>";
             scoreText += " Time: <span>" + Math.round(100 * (((new Date).getTime() - Q) / 1E3)) / 100 + "s</span>";
-            w.innerHTML = scoreText
+            //w.innerHTML = scoreText
         }
         ma || requestAnimFrame(fa)
     }
@@ -481,10 +480,8 @@ var SinuousWorld = new function() {
         this.force = 0.8 + 0.4 * Math.random();
         this.randomizeType()
     }
-    var A =
-        window.FACEBOOK_MODE || !1,
-        xa = A ? 758 : 1E3,
-        ya = A ? 500 : 600,
+    var xa = 1E3,
+        ya = 600,
         M = 60,
         za = 0.25,
         pa = 2,
@@ -504,7 +501,7 @@ var SinuousWorld = new function() {
             width: UserProfile.isTouchDevice() ? window.innerWidth : xa,
             height: UserProfile.isTouchDevice() ? window.innerHeight : ya
         },
-        q, b, D, w, x, sa, R, J, Ea, O, Fa = null,
+        q, b, x, sa, R, J, Ea, O, Fa = null,
         n = {
             messsage: "",
             progress: 0,
@@ -582,13 +579,13 @@ var SinuousWorld = new function() {
         ha =
         (new Date).getTime(),
         ga = 0,
-        f = [],
-        ua, T, Ga, va = null;
+        f = [];
+        //var ua = null;
     this.initialize = function() {
         q = document.getElementById("world");
-        D = document.getElementsByTagName("header")[0];
+        //D = document.getElementsByTagName("header")[0];
         x = document.getElementById("game-panels");
-        w = document.getElementById("game-status");
+        //w = document.getElementById("game-status");
         //document.getElementById("message");
         J = document.getElementById("promotion");
         sa = document.getElementById("title");
@@ -596,10 +593,10 @@ var SinuousWorld = new function() {
         Ea = document.getElementById("start-button");
         //O = document.getElementById("mute-button");
         Fa = document.getElementById("reset-button");
-        ua = document.getElementById("highscore-output");
-        T = document.getElementById("highscore-input");
-        Ga = document.getElementById("highscore-submit");
-        va = document.getElementById("highscore-place");
+        //ua = document.getElementById("highscore-output");
+        //T = document.getElementById("highscore-input");
+        //Ga = document.getElementById("highscore-submit");
+        //va = document.getElementById("highscore-place");
         if (q && q.getContext) {
             b = q.getContext("2d");
             document.addEventListener("mousemove", Ua, !1);
@@ -612,9 +609,9 @@ var SinuousWorld = new function() {
             Ea.addEventListener("click", Na, !1);
             //O.addEventListener("click", Ja, !1);
             Fa.addEventListener("click", Ka, !1);
-            Ga.addEventListener("click", Qa, !1);
-            D.addEventListener("mouseover", La, !1);
-            D.addEventListener("mouseout", Ma, !1);
+            //Ga.addEventListener("click", Qa, !1);
+            //D.addEventListener("mouseover", La, !1);
+            //D.addEventListener("mouseout", Ma, !1);
             window.addEventListener("resize", wa, !1);
             //SinuousSound.initialize();
             if (UserProfile.suportsLocalStorage()) {
@@ -637,12 +634,12 @@ var SinuousWorld = new function() {
             P();
             a = new na;
             wa();
-            UserProfile.isTouchDevice() && (w.style.width = i.width + "px", q.style.border = "none", D.style.display = "none", H.x *= 2, H.y *= 2);
+            UserProfile.isTouchDevice() && (/*w.style.width = i.width + "px",*/ q.style.border = "none", /*D.style.display = "none",*/ H.x *= 2, H.y *= 2);
             fa();
             UserProfile.isOnline || S();
             q.style.display = "block";
             x.style.display = "block";
-            Ta()
+            //Ta()
         }
     };
     this.pause = function() {
@@ -674,7 +671,7 @@ window.addEventListener("load", function() {
         window.applicationCache.status == window.applicationCache.UPDATEREADY && (window.applicationCache.swapCache(), confirm("A new version of the game is available. Load it?") && window.location.reload())
     }, !1)
 });
-FACEBOOK_MODE ? (UserProfile.isOnline = !0, UserProfile.isAuthenticated = !0, SinuousWorld.initialize()) : $.post("/php/login-verify.php", "").success(function(c) {
+$.post("/php/login-verify.php", "").success(function(c) {
     UserProfile.isOnline = !0;
     "false" == c ? (UserProfile.isAuthenticated = !1, document.getElementById("highscore-list").innerHTML += '<p class="auth out">You need to <a href="/php/login.php">sign in</a> with a Google account to be eligible for the leaderboard.</p>') : (UserProfile.isAuthenticated = !0, document.getElementById("highscore-list").innerHTML += '<p class="auth in">Logged in as ' +
         c + '. <a href="/php/logout.php">Sign out?</a></p>');
