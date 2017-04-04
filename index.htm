@@ -15,25 +15,14 @@
 
 <body>
     <header class="">
-        <h1>Sinuous</h1>
-        <div class="extra">
-            <h3>Settings</h3>
-            <ul>
-                <li><a id="reset-button" href="#">Reset game</a></li>
-            </ul>
+        <div id="game-status" style="left: 6px; top: 6px; display: block;">
+            Level: <span>7</span> Score: <span>8818</span> Time: <span>147.31s</span>
         </div>
     </header>
     <div id="game">
-        <div id="game-status" class="ui" style="left: 6px; top: 6px; display: block;">Level: <span>7</span> Score: <span>8818</span> Time: <span>147.31s</span></div>
         <div id="game-panels" style="left: 6px; top: 150px; display: block;">
             <div id="message" class="ui">
                 <h2 id="title">Game Over! (8818 points)</h2>
-                <ul class="instructions">
-                    <li>1. Avoid red dots.</li>
-                    <li>2. Hit other dots for boosts.</li>
-                    <li>3. Score extra points by moving around a lot.</li>
-                    <li>4. Stay alive.</li>
-                </ul>
                 <a href="#" id="start-button">Start</a>
                 <div id="level-selector">
                     <span>Level:</span>
@@ -48,6 +37,9 @@
                         <li data-level="8" class="locked">8</li>
                         <li data-level="9" class="locked">9</li>
                     </ul>
+                </div>
+                <div>
+                    <a id="reset-button" href="#">Reset game</a>
                 </div>
             </div>
 
@@ -65,7 +57,7 @@
         !window.jQuery && document.write(unescape('%3Cscript src="../js/libs/jquery-1.5.2.min.js"%3E%3C/script%3E'))
     </script>
     <!--<script src="js/swfobject.js"></script>-->
-    <script src="js/sinuous.js"></script>
+		<script src="js/sinuous.js"></script>
 	</body>
 
 </html>

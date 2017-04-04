@@ -418,7 +418,6 @@ var SinuousWorld = new function() {
             scoreText = "Level: <span>" + r + "</span>";
             scoreText += " Score: <span>" + Math.round(m) + "</span>";
             scoreText += " Time: <span>" + Math.round(100 * (((new Date).getTime() - Q) / 1E3)) / 100 + "s</span>";
-            scoreText += ' <p class="fps">FPS: <span>' + Math.round(B) + " (" + Math.round(100 * Math.max(Math.min(B / M, M), 0)) + "%)</span></p>";
             w.innerHTML = scoreText
         }
         ma || requestAnimFrame(fa)
@@ -575,7 +574,6 @@ var SinuousWorld = new function() {
         };
     v = y = k = c = 0;
     var B = {
-            fps: 0,
             fpsMin: 1E3,
             fpsMax: 0
         },
@@ -591,7 +589,7 @@ var SinuousWorld = new function() {
         D = document.getElementsByTagName("header")[0];
         x = document.getElementById("game-panels");
         w = document.getElementById("game-status");
-        document.getElementById("message");
+        //document.getElementById("message");
         J = document.getElementById("promotion");
         sa = document.getElementById("title");
         R = document.getElementById("level-selector");
