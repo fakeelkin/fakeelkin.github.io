@@ -1,21 +1,21 @@
 var UserProfile = {
         isOnline: navigator.onLine,
         isAuthenticated: !1,
-        isTouchDevice: function() {
+        /*isTouchDevice: function() {
             return navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)
-        },
-        supportsAudio: function() {
+        },*/
+        /*supportsAudio: function() {
             return !this.isTouchDevice()
-        },
+        },*/
         suportsLocalStorage: function() {
             return "localStorage" in window && null !== window.localStorage
         }
-    },
+    }/*,
     AJAX = {
         post: function(c, k, y) {
             $.post(c, k, y)
         }
-    };
+    }*/;
 
 function Point(c, k) {
     this.position = {
@@ -109,7 +109,7 @@ var SinuousWorld = new function() {
     function Na(h) {
         !1 == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = pa, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
             "none", w.style.display = "block", Q = (new Date).getTime());
-        UserProfile.isTouchDevice() || h.preventDefault()
+        /*UserProfile.isTouchDevice() ||*/ h.preventDefault()
     }
 
     function qa() {
@@ -175,25 +175,25 @@ var SinuousWorld = new function() {
         })
     }*/
 
-    function Ra() {
-        var /*a = T.value,*/
+    /*function Ra() {
+        var a = T.value,
             b = Math.round(100 * (ra / 1E3)) / 100,
             g = 3.14159265 * (m * m) * Math.max(a.length, 1);
-            /*var a = "m=shs&n=" +
+            var a = "m=shs&n=" +
             a + ("&s=" + g) + ("&d=" + b) + ("&sc=" + sc),
             a = a + ("&fc=" + Math.round(c)),
             a = a + ("&fs=" + Math.round(k)),
             a = a + ("&ms=" + Math.round(y)),
             a = a + ("&cs=" + Math.round(v)),
             a = a + ("&f=" + Math.round((da + ea + B) / 3)),
-            a = a + (A ? "&table=facebook" : "");*/
-        /*AJAX.post("/php/highscore.php", a, function(a) {
+            a = a + (A ? "&table=facebook" : "");
+        AJAX.post("/php/highscore.php", a, function(a) {
             f = eval(a);
             ca()
         }, function() {
             S()
-        })*/
-    }
+        })
+    }*/
 
     /*function ca() {
         if (f) {
@@ -232,14 +232,14 @@ var SinuousWorld = new function() {
     function Za() {}
 
     function wa() {
-        i.width = UserProfile.isTouchDevice() ?
-            window.innerWidth : xa;
-        i.height = UserProfile.isTouchDevice() ? window.innerHeight : ya;
+        i.width = /*UserProfile.isTouchDevice() ?
+            window.innerWidth : */xa;
+        i.height = /*UserProfile.isTouchDevice() ? window.innerHeight :*/ ya;
         q.width = i.width;
         q.height = i.height;
         Math.max(0.5 * (window.innerHeight - i.height), 5);
         var a = 6;
-        UserProfile.isTouchDevice() ? (x.style.left = "0px", x.style.top = "0px", w.style.left = "0px", w.style.top = "0px") : (x.style.left = a + "px", x.style.top = Math.round(i.height / 4) + "px", w.style.left = a + "px", w.style.top = a + "px")
+        /*UserProfile.isTouchDevice() ? (x.style.left = "0px", x.style.top = "0px", w.style.left = "0px", w.style.top = "0px") : */(x.style.left = a + "px", x.style.top = Math.round(i.height / 4) + "px", w.style.left = a + "px", w.style.top = a + "px")
     }
 
     function L(a, b, g) {
@@ -500,8 +500,8 @@ var SinuousWorld = new function() {
         i = {
             x: 0,
             y: 0,
-            width: UserProfile.isTouchDevice() ? window.innerWidth : xa,
-            height: UserProfile.isTouchDevice() ? window.innerHeight : ya
+            width: /*UserProfile.isTouchDevice() ? window.innerWidth :*/ xa,
+            height: /*UserProfile.isTouchDevice() ? window.innerHeight :*/ ya
         },
         q, b, x, sa, R, J, Ea, O, Fa = null,
         n = {
@@ -589,7 +589,7 @@ var SinuousWorld = new function() {
     this.initialize = function() {
         q = document.getElementById("world");
         //D = document.getElementsByTagName("header")[0];
-        x = document.getElementById("game-panels");
+        x = document.getElementById("menu");
         w = document.getElementById("game-status");
         //document.getElementById("message");
         J = document.getElementById("promotion");
@@ -639,7 +639,7 @@ var SinuousWorld = new function() {
             P();
             a = new na;
             wa();
-            UserProfile.isTouchDevice() && (w.style.width = i.width + "px", q.style.border = "none", /*D.style.display = "none",*/ H.x *= 2, H.y *= 2);
+            /*UserProfile.isTouchDevice() &&*/ (w.style.width = i.width + "px", q.style.border = "none", /*D.style.display = "none",*/ H.x *= 2, H.y *= 2);
             fa();
             UserProfile.isOnline || S();
             q.style.display = "block";

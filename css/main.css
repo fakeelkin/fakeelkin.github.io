@@ -72,26 +72,29 @@ div.ui {
 	float: left;
 }
 
-#game-panels {
+#menu {
 	width: 1000px;
 	position: absolute;
 	z-index: 3;
 	left: 6px;
 	top: 150px;
 	display: block;
+	padding: 16px;
+	margin-top: 10px;
+	width: 225px
 }
 
-#game-panels div.ui h2 {
+#menu h2 {
 	margin-bottom: 20px;
 	color: #eeeeee;
 }
 
-#game-panels div.ui #level-selector {
+#menu #level-selector {
 	margin: 20px 0;
 	font-size: 11px;
 }
 
-#game-panels div.ui #level-selector ul {
+#menu  #level-selector ul {
 	margin: 10px 0;
 	display: inline;
 	padding: 4px;
@@ -127,7 +130,7 @@ div.ui {
 	color: #555;
 }
 
-#game-panels div.ui a {
+#menu  a {
 	outline: none;
 	font-family: Helvetica;
 	font-size: 38px;
@@ -140,19 +143,13 @@ div.ui {
 	-webkit-transition: all .18s linear;
 }
 
-#game-panels div.ui a:hover {
+#menu  a:hover {
 	color: #ffffff;
 	background-color: #000000;
 	transition: all .18s linear;
 	-o-transition: all .18s linear;
 	-moz-transition: all .18s linear;
 	-webkit-transition: all .18s linear;
-}
-
-#message {
-	padding: 16px;
-	margin-top: 10px;
-	width: 225px;
 }
 
 canvas {
