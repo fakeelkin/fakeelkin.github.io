@@ -19,113 +19,113 @@ function suportsLocalStorage() {
     return "localStorage" in window && null !== window.localStorage
 }
 
-function Point(c, k) {
-    this.position = {
-        x: c,
-        y: k
+class Point {
+    constructor(c, k) {
+        this.position = {
+            x: c,
+            y: k
+        }
+    }
+
+    distanceTo(c) {
+        let a = c.x - this.position.x;
+        let b = c.y - this.position.y;
+        return Math.sqrt(a * a + b * b);
+  }
+
+    clonePosition() {
+        return {
+            x: this.position.x,
+            y: this.position.y
+          }
     }
 }
 
-Point.prototype.distanceTo = function(c) {
-    var k = c.x - this.position.x,
-        c = c.y - this.position.y;
-    return Math.sqrt(k * k + c * c)
-};
+class Region {
+  constructor() {
+      this.top = this.left = 999999;
+      this.bottom = this.right = 0
+  }
 
-Point.prototype.clonePosition = function() {
-    return {
-        x: this.position.x,
-        y: this.position.y
-    }
-};
+  reset() {
+      this.top = this.left = 999999;
+      this.bottom = this.right = 0
+  };
 
-function Region() {
-    this.top = this.left = 999999;
-    this.bottom = this.right = 0
+  inflate(c, k) {
+      this.left = Math.min(this.left, c);
+      this.top = Math.min(this.top, k);
+      this.right = Math.max(this.right, c);
+      this.bottom = Math.max(this.bottom, k);
+  };
+
+  expand(c, k) {
+      this.left -= c;
+      this.top -= k;
+      this.right += 2 * c;
+      this.bottom += 2 * k;
+  };
+
+  contains(c, k) {
+      return c > this.left && c < this.right && k > this.top && k < this.bottom;
+  };
+
+  size() {
+      return (this.right - this.left + (this.bottom - this.top)) / 2;
+  };
+
+  center() {
+      let x = this.left + (this.right - this.left) / 2;
+      let y = this.top + (this.bottom - this.top) / 2;
+      return new Point(x, y);
+  };
+
+  toRectangle() {
+      return {
+          x: this.left,
+          y: this.top,
+          width: this.right - this.left,
+          height: this.bottom - this.top
+      }
+  };
+
 }
 
-Region.prototype.reset = function() {
-    this.top = this.left = 999999;
-    this.bottom = this.right = 0
-};
-
-Region.prototype.inflate = function(c, k) {
-    this.left = Math.min(this.left, c);
-    this.top = Math.min(this.top, k);
-    this.right = Math.max(this.right, c);
-    this.bottom = Math.max(this.bottom, k)
-};
-
-Region.prototype.expand = function(c, k) {
-    this.left -= c;
-    this.top -= k;
-    this.right += 2 * c;
-    this.bottom += 2 * k
-};
-
-Region.prototype.contains = function(c, k) {
-    return c > this.left && c < this.right && k > this.top && k < this.bottom
-};
-
-Region.prototype.size = function() {
-    return (this.right - this.left + (this.bottom - this.top)) / 2
-};
-
-Region.prototype.center = function() {
-    return new Point(this.left + (this.right - this.left) / 2, this.top + (this.bottom - this.top) / 2)
-};
-
-Region.prototype.toRectangle = function() {
-    return {
-        x: this.left,
-        y: this.top,
-        width: this.right - this.left,
-        height: this.bottom - this.top
-    }
-};
 
 var SinuousWorld = new function() {
-    var c = 0, k = 0, y = 0, v = 0;
-    var xa = 1E3,
-        ya = 600,
-        M = 60,
-        za = 0.25,
-        ia = 3, //жизни
-        Aa = 120,
-        Y = "shield",
-        N = "life",
-        Z = "gravitywarp",
-        ja = "timewarp",
-        ka = "sizewarp",
-        Da = [Y, Y, N, Z, Z, ja, ka],
-        i = {
+    let c = 0; let y = 0; let v = 0;//говнопеременные
+    let M = 60;
+    let za = 0.25;
+    const lives = 3;
+    let Aa = 120;
+    const Da = ["shield", "life", "gravitywarp", "timewarp", "sizewarp"];//для рандомного выпадения плюх
+    let i = {
             x: 0,
             y: 0,
-            width: xa,
-            height: ya
-        },
-        q, b, x, sa, R, J, Ea, O, Fa = null,
-        n = {
+            width: 1000,
+            height: 600
+        };
+    let world;let  b;let  menu;let  title;let  level_selector;let  start_button;let  O;let  reset_button = null;
+    let n = {
             messsage: "",
             progress: 0,
             target: 0
-        },
-        u = [],
-        z = [],
-        U = [],
-        aa = [],
-        a = null,
-        E = window.innerWidth - i.width,
-        F = window.innerHeight - i.height,
-        s = false,
-        ma = false,
-        m = 0,
-        Q = 0,
-        ra = 0,
-        I = 0,
-        W = [],
-        r = 1,
-        G = [{ //параметры уровней
+        };
+    let u = [];
+    let z = [];
+    let U = [];
+    let aa = [];
+    let a = null;
+    let E = window.innerWidth - i.width;
+    let F = window.innerHeight - i.height;
+    let s = false;
+    let ma = false;
+    let m = 0;
+    let start_time = 0;
+    let I = 0;
+    let W = [];
+    let r = 1;
+    let G = [{ //параметры уровней
             factor: 1.2, //скорость
             duration: 300, //продолжительность по времени
             multiplier: 0.5 //на сколько увелисиваются очки
@@ -151,7 +151,7 @@ var SinuousWorld = new function() {
             multiplier: 1.1
         }, {
             factor: 2.9,
-            duration: 1E3,
+            duration: 1000,
             multiplier: 1.3
         }, {
             factor: 3.5,
@@ -161,25 +161,25 @@ var SinuousWorld = new function() {
             factor: 4.8,
             duration: 2E3,
             multiplier: 2
-        }],
-        o = {
+        }];
+        let o = {
             unlockedLevels: 1,
             selectedLevel: 1,
             mute: false
-        },
-        H = {
+        };
+        let H = {
             x: -1.3,
             y: 1
         };
-    var B = {
-            fpsMin: 1E3,
+    let  B = {
+            fpsMin: 1000,
             fpsMax: 0
-        },
-        da = 1E3,
-        ea = 0,
-        ha = (new Date).getTime(),
-        ga = 0,
-        f = [];
+        };
+        let da = 1000;
+        let ea = 0;
+        let ha = (new Date).getTime();
+        let ga = 0;
+        let f = [];
 
     function ba() {
         suportsLocalStorage() && (localStorage.unlockedLevels = o.unlockedLevels, localStorage.selectedLevel = o.selectedLevel, localStorage.mute = o.mute)
@@ -190,7 +190,7 @@ var SinuousWorld = new function() {
         event.preventDefault()
     }
 
-    function Ka() {
+    function click_reset() {
         suportsLocalStorage() && (localStorage.unlockedLevels = null, localStorage.selectedLevel = null, o.unlockedLevels = 1,
             r = o.selectedLevel = 1);
         P();
@@ -198,33 +198,27 @@ var SinuousWorld = new function() {
         alert("Game history was reset.")
     }
 
-    function La() {
-        s;
-    }
-
-    function Na(h) {
-        false == s && (s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = ia-1, a.timewarped = false, a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
-            "none", w.style.display = "block", Q = (new Date).getTime());
+    function click_start(h) {
+        false == s && (s = !0, u = [], z = [], v = y = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = lives-1, a.timewarped = false, a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0, menu.style.display =
+            "none", game_status.style.display = "block", start_time = (new Date).getTime());
         h.preventDefault();
     }
 
     function qa() {
         s = false;
-        ra = (new Date).getTime() - Q;
-        J && (J.style.display = "block");
-        x.style.display = "block";
+        menu.style.display = "block";
         m = Math.round(m);
-        sa.innerHTML = "Game Over! (" + m + " points)";
+        title.innerHTML = "Game Over! (" + m + " points)";
         scoreText = "<span>Last results:</span>";
         scoreText += " Level <span>" + r + "</span>";
         scoreText += " Score <span>" + Math.round(m) + "</span>";
-        scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - Q) / 1E3)) / 100 + "s</span>";
-        w.innerHTML = scoreText;
+        scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - start_time) / 1000)) / 100 + "s</span>";
+        game_status.innerHTML = scoreText;
     }
 
     function P() {
-        for (var a = R.getElementsByTagName("li"), b = 0, g = a.length; b < g; b++) {
-            var c = b >= o.unlockedLevels ? "locked" : "unlocked";
+        for (let a = level_selector.getElementsByTagName("li"), b = 0, g = a.length; b < g; b++) {
+            let  c = b >= o.unlockedLevels ? "locked" : "unlocked";
             b + 1 == o.selectedLevel && (c = "selected");
             a[b].setAttribute("class", c);
         }
@@ -235,38 +229,32 @@ var SinuousWorld = new function() {
         a.preventDefault()
     }
 
-    function Ua(a) {
-        (E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6, F = a.clientY - 0.5 * (window.innerHeight - i.height) - 6)
+    function mouse_move(a) {
+        (E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6, F = a.clientY - 0.65 * (window.innerHeight - i.height) - 6)
     }
 
-    function Va() {}
-
-    function Wa() {}
-
-    function Xa(a) {
+    function touch_start(a) {
         1 == a.touches.length && (a.preventDefault(), E = a.touches[0].pageX - 0.5 * (window.innerWidth - i.width), F = a.touches[0].pageY - 0.5 * (window.innerHeight - i.height))
     }
 
-    function Ya(a) {
+    function touch_move(a) {
         1 == a.touches.length && (a.preventDefault(), E = a.touches[0].pageX - 0.5 * (window.innerWidth - i.width) - 60, F = a.touches[0].pageY - 0.5 * (window.innerHeight - i.height) - 30)
     }
 
-    function Za() {}
-
     function wa() {
-        i.width = xa;
-        i.height = ya;
-        q.width = i.width;
-        q.height = i.height;
+        i.width = 1000;
+        i.height = 600;
+        world.width = i.width;
+        world.height = i.height;
         Math.max(0.5 * (window.innerHeight - i.height), 5);
-        var a = 6;
-        (x.style.left = a + "px", x.style.top = Math.round(i.height / 4) + "px", w.style.left = a + "px", w.style.top = a + "px");
+        let a = 6;
+        (menu.style.left = a + "px", menu.style.top = Math.round(i.height / 4) + "px", game_status.style.left = a + "px", game_status.style.top = a + "px");
     }
 
     function L(a, b, g) {
         g = g || 1;
         for (g = 10 * g + Math.random() * 15 * g; 0 <= --g;) {
-            var c = new Point;
+            let c = new Point;
             c.position.x = a.x + Math.sin(g) * b;
             c.position.y =
                 a.y + Math.cos(g) * b;
@@ -293,25 +281,26 @@ var SinuousWorld = new function() {
     }
 
     function fa() {
-        for (var h = W.length; h--;) {
-            var t = W[h];
+      //let k = 0;
+        for (let h = W.length; h--;) {
+            let t = W[h];
             b.clearRect(Math.floor(t.x), Math.floor(t.y), Math.ceil(t.width), Math.ceil(t.height))
         }
         W = [];
-        h = (new Date).getTime();
+        let h = (new Date).getTime();
         ga++;
-        h > ha + 1E3 && (B = Math.min(Math.round(1E3 * ga / (h - ha)), M), da = Math.min(da, B), ea = Math.max(ea, B), ha = h, ga = 0);
-        var g = G[r - 1],
+        h > ha + 1000 && (B = Math.min(Math.round(1000 * ga / (h - ha)), M), da = Math.min(da, B), ea = Math.max(ea, B), ha = h, ga = 0);
+        let g = G[r - 1],
             l = G[r],
-            h = g.factor,
-            t = g.multiplier;
+            tq = g.multiplier;
+        h = g.factor;
         r < G.length &&
             s && (h += I / g.duration * (l.factor - g.factor));
         l = 0.01 + 0.99 * (Math.max(Math.min(B, M), 0) / M);
-        (l = l * l * t) || (l = 0.5);
-        var t = H.x * h * (1 - a.timefactor),
-            g = H.y * h * (1 - a.timefactor),
-            d, j, f;
+        (l = l * l * tq) || (l = 0.5);
+        let t = H.x * h * (1 - a.timefactor);
+            g = H.y * h * (1 - a.timefactor);
+        let d, j, f;
         j = 1 == a.flicker % 4 || 2 == a.flicker % 4;
         if (s) {
             pp = a.clonePosition();
@@ -320,7 +309,7 @@ var SinuousWorld = new function() {
             m += 0.4 * h * l;
             m += 0.1 * a.distanceTo(pp) * l;
             c++;
-            k += 0.4 * h * l;
+            //k += 0.4 * h * l;
             y += 0.1 * a.distanceTo(pp) * l;
             a.flicker = Math.max(a.flicker - 1, 0);
             a.shield = Math.max(a.shield - 1, 0);
@@ -393,17 +382,17 @@ var SinuousWorld = new function() {
         for (d = 0; d < z.length; d++) {
             p = z[d];
             if (p.distanceTo(a.position) < 0.5 * (a.size + p.size) && s) {
-                p.type == Y ? (a.shield = 300) : p.type == N ? a.lives < ia && (X("LIFE UP!", p.clonePosition(), p.force), a.lives = Math.min(a.lives + 1, ia)) : p.type == Z ? a.gravitywarped = !0 : p.type == ja ? a.timewarped = !0 : p.type == ka && (a.sizewarped = !0);
-                p.type != N && (m += 50 * l, v += 50 * l, X(Math.ceil(50 * l), p.clonePosition(), p.force));
+                p.type == "shield" ? (a.shield = 300) : p.type == "life" ? a.lives < lives && (X("LIFE UP!", p.clonePosition(), p.force), a.lives = Math.min(a.lives + 1, lives)) : p.type == "gravitywarp" ? a.gravitywarped = !0 : p.type == "timewarp" ? a.timewarped = !0 : p.type == "sizewarp" && (a.sizewarped = !0);
+                p.type != "life" && (m += 50 * l, v += 50 * l, X(Math.ceil(50 * l), p.clonePosition(), p.force));
                 for (j = 0; j < u.length; j++) e = u[j], 100 > e.distanceTo(p.position) && (L(e.position, 10), u.splice(j, 1), j--, m += 20 * l, v += 20 * l, X(Math.ceil(20 * l), e.clonePosition(), e.force));
                 z.splice(d, 1);
                 d--
             } else if (p.position.x < -p.size || p.position.y > i.height + p.size) z.splice(d, 1), d--;
             j = "";
             f = DEFAULT_COLOR;
-            p.type === Y ? (j = "S", f = S_COLOR) : p.type === N ? (j = "1", f = COLOR_1) :
-                p.type === Z ? (j = "G", f = G_COLOR) : p.type === ja ? (j = "T", f = T_COLOR) :
-                p.type === ka && (j = "M", f = M_COLOR);
+            p.type === "shield" ? (j = "S", f = S_COLOR) : p.type === "life" ? (j = "1", f = COLOR_1) :
+                p.type === "gravitywarp" ? (j = "G", f = G_COLOR) : p.type === "timewarp" ? (j = "T", f = T_COLOR) :
+                p.type === "sizewarp" && (j = "M", f = M_COLOR);
             b.beginPath();
             b.fillStyle = f;
             b.arc(p.position.x, p.position.y, p.size / 2, 0, 2 * Math.PI, !0);
@@ -420,12 +409,12 @@ var SinuousWorld = new function() {
         u.length < 27 * h && u.push(Ba(new Ca));
         if (1 > z.length && 0.994 < Math.random() && false == a.isBoosted()) {
             for (h =
-                new la; h.type == N && a.lives >= ia;) h.randomizeType();
+                new la; h.type == "life" && a.lives >= lives;) h.randomizeType();
             z.push(Ba(h))
         }
         1 == a.shield && s;
         for (d = 0; d < U.length; d++)
-            p = U[d], p.velocity.x += 0.04 * (t - p.velocity.x), p.velocity.y += 0.04 * (g - p.velocity.y), p.position.x += p.velocity.x, p.position.y += p.velocity.y, p.alpha -= 0.02, b.fillStyle = /*цвет всплесков*/"rgba(255,255,255," + Math.max(p.alpha, 0) + ")", b.fillRect(p.position.x, p.position.y, 1, 1), C(p.position.x, p.position.y, 2), 0 >= p.alpha && U.splice(d, 1);
+            p = U[d], p.velocity.x += 0.04 * (tq - p.velocity.x), p.velocity.y += 0.04 * (g - p.velocity.y), p.position.x += p.velocity.x, p.position.y += p.velocity.y, p.alpha -= 0.02, b.fillStyle = /*цвет всплесков*/"rgba(255,255,255," + Math.max(p.alpha, 0) + ")", b.fillRect(p.position.x, p.position.y, 1, 1), C(p.position.x, p.position.y, 2), 0 >= p.alpha && U.splice(d, 1);
         for (d = 0; d < aa.length; d++)
         p = aa[d], p.position.x += t * p.force, p.position.y += g * p.force, p.position.y -= 1, h = b.measureText(p.text).width, l = p.position.x - 0.5 * h, b.save(), b.font = "10px Arial", b.fillStyle = "rgba( 255, 255, 255, " + p.alpha + " )"/*цвет очков*/, b.fillText(p.text, l, p.position.y), b.restore(), V(l - 5, p.position.y - 12, h + 8, 22), p.alpha *= 0.96, 0.05 > p.alpha && (aa.splice(d, 1), d--);
         n.message && "" !== n.message && (n.progress += 0.05 * (n.target - n.progress), 0.9999999 < n.progress ? n.target = 0 : 0 == n.target && 0.05 > n.progress && (n.message = ""), b.save(), b.font = "bold 22px Arial", p = {
@@ -439,8 +428,8 @@ var SinuousWorld = new function() {
             scoreText = "<span>Last results:</span>";
             scoreText += " Level <span>" + r + "</span>";
             scoreText += " Score <span>" + Math.round(m) + "</span>";
-            scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - Q) / 1E3)) / 100 + "s</span>";
-            w.innerHTML = scoreText;
+            scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - start_time) / 1000)) / 100 + "s</span>";
+            game_status.innerHTML = scoreText;
         }
         ma || requestAnimFrame(fa);
     }
@@ -470,7 +459,7 @@ var SinuousWorld = new function() {
         this.trail = [];
         this.size = 8;
         this.shield = 0;
-        this.lives = ia-1;
+        this.lives = lives-1;
         this.flicker = 0;
         this.gravitywarped = false;
         this.gravityfactor = 0;
@@ -505,24 +494,20 @@ var SinuousWorld = new function() {
     }
 
     this.initialize = function() {
-        q = document.getElementById("world");
-        x = document.getElementById("menu");
-        w = document.getElementById("game-status");
-        J = document.getElementById("promotion");
-        sa = document.getElementById("title");
-        R = document.getElementById("level-selector");
-        Ea = document.getElementById("start-button");
-        Fa = document.getElementById("reset-button");
-        if (q && q.getContext) {
-            b = q.getContext("2d");
-            document.addEventListener("mousemove", Ua, false);
-            document.addEventListener("mousedown", Va, false);
-            document.addEventListener("mouseup", Wa, false);
-            q.addEventListener("touchstart", Xa, false);
-            document.addEventListener("touchmove", Ya, false);
-            document.addEventListener("touchend", Za, false);
-            Ea.addEventListener("click", Na, false);
-            Fa.addEventListener("click", Ka, false);
+        world = document.getElementById("world");//q
+        menu = document.getElementById("menu");//x
+        game_status = document.getElementById("game-status");//w
+        title = document.getElementById("title");//sa
+        level_selector = document.getElementById("level-selector");//R
+        start_button = document.getElementById("start-button");//Ea
+        reset_button = document.getElementById("reset-button");//Fa
+        if (world && world.getContext) {
+            b = world.getContext("2d");//b
+            document.addEventListener("mousemove", mouse_move, false);//Ua
+            world.addEventListener("touchstart", touch_start, false);//Xa
+            document.addEventListener("touchmove", touch_move, false);//Ya
+            start_button.addEventListener("click", click_start, false);
+            reset_button.addEventListener("click", click_reset, false);
             window.addEventListener("resize", wa, false);
             if (suportsLocalStorage()) {
                 var c = parseInt(localStorage.unlockedLevels),
@@ -535,17 +520,17 @@ var SinuousWorld = new function() {
             g = "";
             c = 1;
             for (f = G.length; c <= f; c++) g += '<li data-level="' + c + '">' + c + "</li>";
-            R.getElementsByTagName("ul")[0].innerHTML = g;
-            g = R.getElementsByTagName("li");
+            level_selector.getElementsByTagName("ul")[0].innerHTML = g;
+            g = level_selector.getElementsByTagName("li");
             c = 0;
             for (f = g.length; c < f; c++) g[c].addEventListener("click", Pa, false);
             P();
             a = new na;
             wa();
-            (w.style.width = i.width + "px", q.style.border = "none", H.x *= 2, H.y *= 2);
+            (game_status.style.width = i.width + "px", world.style.border = "none", H.x *= 2, H.y *= 2);
             fa();
-            q.style.display = "block";
-            x.style.display = "block";
+            world.style.display = "block";
+            menu.style.display = "block";
         }
     };
     this.pause = function() {
@@ -568,7 +553,7 @@ var SinuousWorld = new function() {
 };
 window.requestAnimFrame = function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(c) {
-        window.setTimeout(c, 1E3 / 60);
+        window.setTimeout(c, 1000 / 60);
     }
 }();
 
