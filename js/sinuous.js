@@ -1,23 +1,23 @@
 const DEFAULT_COLOR = "#fff";
-const CHILD_COLOR = "#fff";
-const TAIL_COLOR = "#777";
-const HEAD_COLOR = "#444";
-const POINT_COLOR = "#000";
-const DEATH_COLOR = "#333";
-const G_COLOR = "#fff";
-const S_COLOR = "#fff";
-const COLOR_1 = "#fff";
-const T_COLOR = "#fff";
-const M_COLOR = "#fff";
+const HEAD_COLOR = "#f82220";
+const TAIL_COLOR = "#c2003c";
+const CHILD_COLOR = "#f96e37";
+const POINT_COLOR = "#39e2c4";
+const DEATH_COLOR = "#fff";
+const G_COLOR = "#fcf13a";
+const S_COLOR = "#c3fc3a";
+const COLOR_1 = "#fc3a9e";
+const T_COLOR = "#3a5afc";
+const M_COLOR = "#fc5f3a";
 const FONT_COLOR = "#000";
-const S_EFFECT_COLOR_1 = "#fff";
-const S_EFFECT_COLOR_2 = "#333";
-const G_EFFECT_COLOR_1 = "rgba(255, 255, 255, 0.8)";
-const G_EFFECT_COLOR_2 = "rgba(255, 255, 255, 0)";
+const S_EFFECT_COLOR_1 = "#fc783a";
+const S_EFFECT_COLOR_2 = "#ec6319";
+const G_EFFECT_COLOR_1 = "rgba(252, 219, 162, 0.6)";
+const G_EFFECT_COLOR_2 = "rgba(252, 145, 58, 0)";
 
 var UserProfile = {
         isOnline: navigator.onLine,
-        isAuthenticated: !1,
+        isAuthenticated: false,
         /*isTouchDevice: function() {
             return navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)
         },
@@ -124,7 +124,7 @@ var SinuousWorld = new function() {
     }*/
 
     function Na(h) {
-        !1 == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = ia-1, a.timewarped = !1, a.timefactor = 0, a.sizewarped = !1, a.sizefactor = 0, a.gravitywarped = !1, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
+        false == s && (/*SinuousSound.play(SinuousSound.CALM),*/ s = !0, u = [], z = [], v = y = k = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = ia-1, a.timewarped = false, a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0, J && (J.style.display = "none"), x.style.display =
             "none", w.style.display = "block", Q = (new Date).getTime());
         /*UserProfile.isTouchDevice() ||*/ h.preventDefault()
     }
@@ -132,7 +132,7 @@ var SinuousWorld = new function() {
     function qa() {
         /*SinuousSound.play(SinuousSound.IDLE);
         SinuousSound.play(SinuousSound.FX_EXPLOSION);*/
-        s = !1;
+        s = false;
         ra = (new Date).getTime() - Q;
         //Oa();
         J && (J.style.display = "block");
@@ -161,7 +161,7 @@ var SinuousWorld = new function() {
     }
 
     function S() {
-        UserProfile.isOnline = !1
+        UserProfile.isOnline = false
     }
 
     /*function Qa() {
@@ -221,7 +221,7 @@ var SinuousWorld = new function() {
     }
 
     function Sa() {
-        if (f && !1 == s && UserProfile.isAuthenticated) {
+        if (f && false == s && UserProfile.isAuthenticated) {
             for (var a = 1, b = 0; b < f.length; b++) f[b].score > m && a++;
             if (10 > a) {
                 if (1 < f.length && (b = 9 <= f.length ? f.pop() : {})) b.name = "", b.score = Math.round(m), b.date = "", newHighscoreData = f.slice(0, a - 1), newHighscoreData.push(b), f = newHighscoreData = newHighscoreData.concat(f.slice(a - 1)), ca();
@@ -322,11 +322,11 @@ var SinuousWorld = new function() {
             a.shield = Math.max(a.shield - 1, 0);
             a.gravity = Math.max(a.gravity - 0.35, 0);
             a.timewarped ? (0.5999 < a.timefactor &&
-                (a.timewarped = !1), a.timefactor += 0.1 * (0.6 - a.timefactor)) : a.timefactor += 0.002 * (0 - a.timefactor);
+                (a.timewarped = false), a.timefactor += 0.1 * (0.6 - a.timefactor)) : a.timefactor += 0.002 * (0 - a.timefactor);
             a.timefactor = Math.max(Math.min(a.timefactor, 1), 0);
-            a.sizewarped ? (0.5999 < a.sizefactor && (a.sizewarped = !1), a.sizefactor += 0.04 * (0.6 - a.sizefactor)) : a.sizefactor += 0.01 * (0 - a.sizefactor);
+            a.sizewarped ? (0.5999 < a.sizefactor && (a.sizewarped = false), a.sizefactor += 0.04 * (0.6 - a.sizefactor)) : a.sizefactor += 0.01 * (0 - a.sizefactor);
             a.sizefactor = Math.max(Math.min(a.sizefactor, 1), 0);
-            a.gravitywarped ? (0.99995 < a.gravityfactor && (a.gravitywarped = !1), a.gravityfactor += 0.04 * (1 - a.gravityfactor)) : (0.12 > a.gravityfactor && (a.gravityfactor = 0), a.gravityfactor += 0.014 * (0 - a.gravityfactor));
+            a.gravitywarped ? (0.99995 < a.gravityfactor && (a.gravitywarped = false), a.gravityfactor += 0.04 * (1 - a.gravityfactor)) : (0.12 > a.gravityfactor && (a.gravityfactor = 0), a.gravityfactor += 0.014 * (0 - a.gravityfactor));
             a.gravityfactor = Math.max(Math.min(a.gravityfactor, 1), 0);
             if (0 < a.shield && (100 < a.shield || 0 != a.shield % 3)) d = a.size * (Math.min(a.shield, 100) / 50), b.beginPath(), b.fillStyle = S_EFFECT_COLOR_1, b.strokeStyle = S_EFFECT_COLOR_2, b.arc(a.position.x, a.position.y, d, 0, 2 * Math.PI, !0), b.fill(), b.stroke(), C(a.position.x, a.position.y, d + 2);
             0 < a.gravityfactor && (f = a.gravityfactor * Aa, d = b.createRadialGradient(a.position.x, a.position.y, 0, a.position.x, a.position.y, f), d.addColorStop(0.1, G_EFFECT_COLOR_1), d.addColorStop(0.8, G_EFFECT_COLOR_2),
@@ -416,7 +416,7 @@ var SinuousWorld = new function() {
             p.position.y += g * p.force
         }
         u.length < 27 * h && u.push(Ba(new Ca));
-        if (1 > z.length && 0.994 < Math.random() && !1 == a.isBoosted()) {
+        if (1 > z.length && 0.994 < Math.random() && false == a.isBoosted()) {
             for (h =
                 new la; h.type == N && a.lives >= ia;) h.randomizeType();
             z.push(Ba(h))
@@ -431,7 +431,7 @@ var SinuousWorld = new function() {
             y: i.height + 40 - 55 * n.progress
         }, b.translate(p.x, p.y), b.fillStyle = /*цвет уровня*/"rgba( 0, 0, 0, " + 0.4 * n.progress + " )", b.fillRect(-15, -30, 200, 100), b.fillStyle = "rgba( 255, 255, 255, " + n.progress + " )", b.fillText(n.message, 0, 0), V(p.x - 15, p.y - 30, 200, 100), b.restore());
         if (s) {
-            if (h = I > G[r - 1].duration) r < G.length ? (r++, I = 0, o.unlockedLevels = Math.max(o.unlockedLevels, r), ba(), P(), h = !0) : h = !1;
+            if (h = I > G[r - 1].duration) r < G.length ? (r++, I = 0, o.unlockedLevels = Math.max(o.unlockedLevels, r), ba(), P(), h = !0) : h = false;
             h && (n.message = "LEVEL " + r + "!", n.progress = 0, n.target = 1);
             scoreText = "<span>Last results:</span>";
             scoreText += " Level <span>" + r + "</span>";
@@ -469,11 +469,11 @@ var SinuousWorld = new function() {
         this.shield = 0;
         this.lives = ia-1;
         this.flicker = 0;
-        this.gravitywarped = !1;
+        this.gravitywarped = false;
         this.gravityfactor = 0;
-        this.timewarped = !1;
+        this.timewarped = false;
         this.timefactor = 0;
-        this.sizewarped = !1;
+        this.sizewarped = false;
         this.sizefactor = 0
     }
 
@@ -533,8 +533,8 @@ var SinuousWorld = new function() {
         a = null,
         E = window.innerWidth - i.width,
         F = window.innerHeight - i.height,
-        s = !1,
-        ma = !1,
+        s = false,
+        ma = false,
         m = 0,
         Q = 0,
         ra =
@@ -544,23 +544,23 @@ var SinuousWorld = new function() {
         r = 1,
         G = [{ //параметры уровней
             factor: 1.2, //скорость
-            duration: 100, //продолжительность по времени
+            duration: 300, //продолжительность по времени
             multiplier: 0.5 //на сколько увелисиваются очки
         }, {
             factor: 1.4,
-            duration: 200,
+            duration: 400,
             multiplier: 0.6
         }, {
             factor: 1.6,
-            duration: 300,
+            duration: 500,
             multiplier: 0.7
         }, {
             factor: 1.8,
-            duration: 450,
+            duration: 600,
             multiplier: 0.8
         }, {
             factor: 2,
-            duration: 600,
+            duration: 700,
             multiplier: 1
         }, {
             factor: 2.4,
@@ -582,7 +582,7 @@ var SinuousWorld = new function() {
         o = {
             unlockedLevels: 1,
             selectedLevel: 1,
-            mute: !1
+            mute: false
         },
         H = {
             x: -1.3,
@@ -620,19 +620,19 @@ var SinuousWorld = new function() {
         va = document.getElementById("highscore-place");*/
         if (q && q.getContext) {
             b = q.getContext("2d");
-            document.addEventListener("mousemove", Ua, !1);
-            document.addEventListener("mousedown", Va, !1);
-            document.addEventListener("mouseup", Wa, !1);
-            q.addEventListener("touchstart", Xa, !1);
-            document.addEventListener("touchmove", Ya, !1);
-            document.addEventListener("touchend", Za, !1);
-            Ea.addEventListener("click", Na, !1);
-            //O.addEventListener("click", Ja, !1);
-            Fa.addEventListener("click", Ka, !1);
-            /*Ga.addEventListener("click", Qa, !1);
-            D.addEventListener("mouseover", La, !1);
-            D.addEventListener("mouseout", Ma, !1);*/
-            window.addEventListener("resize", wa, !1);
+            document.addEventListener("mousemove", Ua, false);
+            document.addEventListener("mousedown", Va, false);
+            document.addEventListener("mouseup", Wa, false);
+            q.addEventListener("touchstart", Xa, false);
+            document.addEventListener("touchmove", Ya, false);
+            document.addEventListener("touchend", Za, false);
+            Ea.addEventListener("click", Na, false);
+            //O.addEventListener("click", Ja, false);
+            Fa.addEventListener("click", Ka, false);
+            /*Ga.addEventListener("click", Qa, false);
+            D.addEventListener("mouseover", La, false);
+            D.addEventListener("mouseout", Ma, false);*/
+            window.addEventListener("resize", wa, false);
             //SinuousSound.initialize();
             if (UserProfile.suportsLocalStorage()) {
                 var c = parseInt(localStorage.unlockedLevels),
@@ -649,7 +649,7 @@ var SinuousWorld = new function() {
             R.getElementsByTagName("ul")[0].innerHTML = g;
             g = R.getElementsByTagName("li");
             c = 0;
-            for (f = g.length; c < f; c++) g[c].addEventListener("click", Pa, !1);
+            for (f = g.length; c < f; c++) g[c].addEventListener("click", Pa, false);
             P();
             a = new na;
             wa();
@@ -666,7 +666,7 @@ var SinuousWorld = new function() {
         //SinuousSound.mute()
     };
     this.resume = function() {
-        ma = !1;
+        ma = false;
         UserProfile.suportsLocalStorage() && "false" == localStorage.mute /*&& (SinuousSound.unmute(), SinuousSound.play(SinuousSound.CALM))*/;
         fa();
     };
@@ -688,7 +688,7 @@ window.requestAnimFrame = function() {
 window.addEventListener("load", function() {
     window.applicationCache && window.applicationCache.addEventListener("updateready", function() {
         window.applicationCache.status == window.applicationCache.UPDATEREADY && (window.applicationCache.swapCache(), confirm("A new version of the game is available. Load it?") && window.location.reload())
-    }, !1)
+    }, false)
 });
 
 SinuousWorld.initialize();
