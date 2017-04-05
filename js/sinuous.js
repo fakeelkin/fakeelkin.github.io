@@ -20,8 +20,8 @@ var UserProfile = {
         isAuthenticated: !1,
         /*isTouchDevice: function() {
             return navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)
-        },*/
-        /*supportsAudio: function() {
+        },
+        supportsAudio: function() {
             return !this.isTouchDevice()
         },*/
         suportsLocalStorage: function() {
@@ -172,27 +172,27 @@ var SinuousWorld = new function() {
                 break
             }
         a && (!T.value || " " == T.value ? alert("Name can not be empty.") : (Ra(), K.style.display = "none"))
-    }*/
+    }
 
-    /*function Oa() {
+    function Oa() {
         AJAX.post("/php/highscore.php", "m=ghs" + (A ? "&table=facebook" : ""), function(a) {
             f = eval(a);
             Sa()
         }, function() {
             S()
         })
-    }*/
+    }
 
-    /*function Ta() {
+    function Ta() {
         AJAX.post("/php/highscore.php", "m=ghs" + (A ? "&table=facebook" : ""), function(a) {
             f = eval(a);
             ca()
         }, function() {
             S()
         })
-    }*/
+    }
 
-    /*function Ra() {
+    function Ra() {
         var a = T.value,
             b = Math.round(100 * (ra / 1E3)) / 100,
             g = 3.14159265 * (m * m) * Math.max(a.length, 1);
@@ -210,17 +210,17 @@ var SinuousWorld = new function() {
         }, function() {
             S()
         })
-    }*/
+    }
 
-    /*function ca() {
+    function ca() {
         if (f) {
             for (var a = "", b = 0; b < f.length; b++) a += "<li>", a += '<span class="place">' + (b + 1) + ".</span>", a += '<span class="name">' + f[b].name + "</span>", a += '<span class="score">' + f[b].score + " p</span>", a += '<span class="date">' +
                 f[b].date + "</span>", a += "</li>";
             ua.innerHTML = a
         }
-    }*/
+    }
 
-    /*function Sa() {
+    function Sa() {
         if (f && !1 == s && UserProfile.isAuthenticated) {
             for (var a = 1, b = 0; b < f.length; b++) f[b].score > m && a++;
             if (10 > a) {
@@ -542,10 +542,10 @@ var SinuousWorld = new function() {
         I = 0,
         W = [],
         r = 1,
-        G = [{
-            factor: 1.2,
-            duration: 100,
-            multiplier: 0.5
+        G = [{ //параметры уровней
+            factor: 1.2, //скорость
+            duration: 100, //продолжительность по времени
+            multiplier: 0.5 //на сколько увелисиваются очки
         }, {
             factor: 1.4,
             duration: 200,
@@ -598,8 +598,7 @@ var SinuousWorld = new function() {
         },
         da = 1E3,
         ea = 0,
-        ha =
-        (new Date).getTime(),
+        ha = (new Date).getTime(),
         ga = 0,
         f = [];
         //var ua = null;
@@ -615,25 +614,24 @@ var SinuousWorld = new function() {
         Ea = document.getElementById("start-button");
         //O = document.getElementById("mute-button");
         Fa = document.getElementById("reset-button");
-        //ua = document.getElementById("highscore-output");
-        //T = document.getElementById("highscore-input");
-        //Ga = document.getElementById("highscore-submit");
-        //va = document.getElementById("highscore-place");
+        /*ua = document.getElementById("highscore-output");
+        T = document.getElementById("highscore-input");
+        Ga = document.getElementById("highscore-submit");
+        va = document.getElementById("highscore-place");*/
         if (q && q.getContext) {
             b = q.getContext("2d");
             document.addEventListener("mousemove", Ua, !1);
             document.addEventListener("mousedown", Va, !1);
             document.addEventListener("mouseup", Wa, !1);
             q.addEventListener("touchstart", Xa, !1);
-            document.addEventListener("touchmove",
-                Ya, !1);
+            document.addEventListener("touchmove", Ya, !1);
             document.addEventListener("touchend", Za, !1);
             Ea.addEventListener("click", Na, !1);
             //O.addEventListener("click", Ja, !1);
             Fa.addEventListener("click", Ka, !1);
-            //Ga.addEventListener("click", Qa, !1);
-            //D.addEventListener("mouseover", La, !1);
-            //D.addEventListener("mouseout", Ma, !1);
+            /*Ga.addEventListener("click", Qa, !1);
+            D.addEventListener("mouseover", La, !1);
+            D.addEventListener("mouseout", Ma, !1);*/
             window.addEventListener("resize", wa, !1);
             //SinuousSound.initialize();
             if (UserProfile.suportsLocalStorage()) {
@@ -641,9 +639,8 @@ var SinuousWorld = new function() {
                     f = parseInt(localStorage.selectedLevel),
                     g = localStorage.mute;
                 c && (o.unlockedLevels = c);
-                f && (o.selectedLevel =
-                    f);
-                g && (o.mute = "true" == g)
+                f && (o.selectedLevel = f);
+                g && (o.mute = "true" == g);
             }
           //  oa();
             g = "";
@@ -671,21 +668,21 @@ var SinuousWorld = new function() {
     this.resume = function() {
         ma = !1;
         UserProfile.suportsLocalStorage() && "false" == localStorage.mute /*&& (SinuousSound.unmute(), SinuousSound.play(SinuousSound.CALM))*/;
-        fa()
+        fa();
     };
     na.prototype = new Point;
     na.prototype.isBoosted = function() {
-        return 0 != this.shield || 0 != this.gravityfactor
+        return 0 != this.shield || 0 != this.gravityfactor;
     };
     Ca.prototype = new Point;
     la.prototype = new Point;
     la.prototype.randomizeType = function() {
-        this.type = Da[Math.round(Math.random() * (Da.length - 1))]
+        this.type = Da[Math.round(Math.random() * (Da.length - 1))];
     }
 };
 window.requestAnimFrame = function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(c) {
-        window.setTimeout(c, 1E3 / 60)
+        window.setTimeout(c, 1E3 / 60);
     }
 }();
 window.addEventListener("load", function() {
