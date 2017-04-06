@@ -202,16 +202,16 @@ var SinuousWorld = new function() {
           a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = lives-1, a.timewarped = false,
           a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0,
           menu.style.display = "none", game_status.style.display = "block", start_time = (new Date).getTime(),
-          level_selector.style.right = "9px", level_selector.style.top = "0px");
+          level_selector.style.right = "9px", level_selector.style.top = "0px", world.style.cursor= "default"/*"none"*/);//кастыль 
         h.preventDefault();
     }
 
     function death() {//после смерти
         to_start = false;
         menu.style.display = "block";
+        world.style.cursor= "default";
         score = Math.round(score);
         scoreText = "<span>Last results:</span>";
-        scoreText += " Level <span>" + cur_level + "</span>";
         scoreText += " Score <span>" + Math.round(score) + "</span>";
         scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - start_time) / 1000)) / 100 + "s</span>";
         game_status.innerHTML = scoreText;
@@ -231,7 +231,7 @@ var SinuousWorld = new function() {
     }
 
     function mouse_move(a) {
-        (E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6, F = a.clientY - 0.65 * (window.innerHeight - i.height) - 6)
+        (E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6, F = a.clientY - 0.55 * (window.innerHeight - i.height) - 6)
     }
 
     function touch_start(a) {
@@ -420,7 +420,6 @@ var SinuousWorld = new function() {
                 cur_level < levels.length ? (cur_level++, I = 0, o.unlockedLevels = Math.max(o.unlockedLevels, cur_level), ba(), P(), h = true) : h = false;
             h && (last_results.message = "LEVEL " + cur_level + "!", last_results.progress = 0, last_results.target = 1);
             scoreText = "<span>Last results:</span>";
-            scoreText += " Level <span>" + cur_level + "</span>";
             scoreText += " Score <span>" + Math.round(score) + "</span>";
             scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - start_time) / 1000)) / 100 + "s</span>";
             game_status.innerHTML = scoreText;

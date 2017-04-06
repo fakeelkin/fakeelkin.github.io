@@ -65,14 +65,14 @@ header {
 	display: block;
 	padding: 16px;
 	margin-top: 10px;
-	width: 225px
+	width: 240px;
 }
 
 #level-selector {
 	font-size: 11px;
 	position: absolute;
 	right: 9px;
-	margin: 12px 6px;
+	margin: 12px 10px;
 }
 
 #level-selector ul {
@@ -111,18 +111,29 @@ header {
 	color: #555;
 }
 
-#start-button, #reset-button {
-	display: block;
+.button{
 	outline: none;
 	font-family: Helvetica;
-	font-size: 38px;
 	text-decoration: none;
-	color: #888;
-	padding: 2px;
 	transition: all .18s linear;
 	-o-transition: all .18s linear;
 	-moz-transition: all .18s linear;
 	-webkit-transition: all .18s linear;
+}
+
+#start-button{
+	display: block;
+	font-family: "HelveticaNeue-Thin";
+	font-size: 120px;
+	color: rgba(200,200,200,0.5);
+	padding: 2px;
+}
+
+#reset-button {
+	display: inline;
+	font-size: 11px;
+	color: #888;
+	padding: 2px;
 }
 
 #start-button:hover, #reset-button:hover {
@@ -136,7 +147,7 @@ header {
 canvas {
 	width: 1000px;
 	height: 600px;
-	cursor: crosshair;
+	cursor: default;
 	background-color: rgba(0,0,0,0.7);
 	border: 0px;
 	border-radius: 4px;
