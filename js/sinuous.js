@@ -104,7 +104,7 @@ var SinuousWorld = new function() {
             width: 1000,
             height: 600
         };
-    let world;let b;let menu;let title;let level_selector;let start_button;let reset_button = null;
+    let world;let b;let menu;let level_selector;let start_button;let reset_button = null;
     let last_results = {
             message: "",
             progress: 0,
@@ -198,16 +198,18 @@ var SinuousWorld = new function() {
     }
 
     function click_start(h) {
-        false == to_start && (to_start = true, u = [], z = [], vg = cg = I = score = 0, cur_level = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = lives-1, a.timewarped = false, a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0, menu.style.display =
-            "none", game_status.style.display = "block", start_time = (new Date).getTime());
+        false == to_start && (to_start = true, u = [], z = [], vg = cg = I = score = 0, cur_level = o.selectedLevel, a.trail = [],
+          a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = lives-1, a.timewarped = false,
+          a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0,
+          menu.style.display = "none", game_status.style.display = "block", start_time = (new Date).getTime(),
+          level_selector.style.right = "9px", level_selector.style.top = "0px");
         h.preventDefault();
     }
 
-    function qa() {
+    function death() {//после смерти
         to_start = false;
         menu.style.display = "block";
         score = Math.round(score);
-        title.innerHTML = "Game Over! (" + score + " points)";
         scoreText = "<span>Last results:</span>";
         scoreText += " Level <span>" + cur_level + "</span>";
         scoreText += " Score <span>" + Math.round(score) + "</span>";
@@ -245,7 +247,7 @@ var SinuousWorld = new function() {
         world.height = i.height;
         Math.max(0.5 * (window.innerHeight - i.height), 5);
         let a = 6;
-        (menu.style.left = a + "px", menu.style.top = Math.round(i.height / 4) + "px", game_status.style.left = a + "px", game_status.style.top = a + "px");
+        //(menu.style.left = a + "px", menu.style.top = Math.round(i.height / 4) + "px", game_status.style.left = a + "px", game_status.style.top = a + "px");
     }
 
     function L(a, b, g) {
@@ -343,7 +345,7 @@ var SinuousWorld = new function() {
             b.fill();
             C(a.position.x, a.position.y, a.size + 6)
         }
-        if (to_start && (0 > a.position.x || a.position.x > i.width || 0 > a.position.y || a.position.y > i.height)) L(a.position, 10), qa();
+        if (to_start && (0 > a.position.x || a.position.x > i.width || 0 > a.position.y || a.position.y > i.height)) L(a.position, 10), death();
         for (d = 0; d < u.length; d++) {
             p = u[d];
             p.size = p.originalSize * (1 - a.sizefactor);
@@ -361,7 +363,7 @@ var SinuousWorld = new function() {
                 vg += 20 * l;
                 X(Math.ceil(20 * l), p.clonePosition(), p.force);
                 continue
-            } else j < 0.5 * (a.size + p.size) && 0 == a.flicker && (0 < a.lives ? (L(a.position, 4), a.lives--, a.flicker += 60, u.splice(d, 1), d--) : (L(a.position, 10), qa()));
+            } else j < 0.5 * (a.size + p.size) && 0 == a.flicker && (0 < a.lives ? (L(a.position, 4), a.lives--, a.flicker += 60, u.splice(d, 1), d--) : (L(a.position, 10), death()));
             b.beginPath();
             b.fillStyle = POINT_COLOR;
             b.arc(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size / 2, 0, 2 * Math.PI, true);//форма поинта
@@ -489,7 +491,6 @@ var SinuousWorld = new function() {
         world = document.getElementById("world");//q
         menu = document.getElementById("menu");//x
         game_status = document.getElementById("game-status");//w
-        title = document.getElementById("title");//sa
         level_selector = document.getElementById("level-selector");//R
         start_button = document.getElementById("start-button");//Ea
         reset_button = document.getElementById("reset-button");//Fa
