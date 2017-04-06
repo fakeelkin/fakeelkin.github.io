@@ -93,39 +93,38 @@ class Region {
 
 
 var SinuousWorld = new function() {
-    let c = 0; let y = 0; let v = 0;//говнопеременные
-    let M = 60;
-    let za = 0.25;
-    const lives = 3;
-    let Aa = 120;
+    let cg = 0; let vg = 0;//говнопеременные
+    const M = 60;//?
+    const lives = 3;//ia
+    const Aa = 120;//?
     const Da = ["shield", "life", "gravitywarp", "timewarp", "sizewarp"];//для рандомного выпадения плюх
-    let i = {
+    const i = { //дефолтные параметры //?
             x: 0,
             y: 0,
             width: 1000,
             height: 600
         };
-    let world;let  b;let  menu;let  title;let  level_selector;let  start_button;let  O;let  reset_button = null;
-    let n = {
-            messsage: "",
+    let world;let b;let menu;let title;let level_selector;let start_button;let reset_button = null;
+    let last_results = {
+            message: "",
             progress: 0,
             target: 0
         };
-    let u = [];
-    let z = [];
-    let U = [];
-    let aa = [];
-    let a = null;
-    let E = window.innerWidth - i.width;
-    let F = window.innerHeight - i.height;
-    let s = false;
-    let ma = false;
-    let m = 0;
-    let start_time = 0;
-    let I = 0;
-    let W = [];
-    let r = 1;
-    let G = [{ //параметры уровней
+    let u = [];//?
+    let z = [];//?
+    let U = [];//?
+    let aa = [];//?
+    let a = null;//?
+    let E = window.innerWidth - i.width;//?
+    let F = window.innerHeight - i.height;//?
+    let to_start = false;//s
+    let ma = false;//?
+    let score = 0;//ma
+    let start_time = 0;//Q
+    let I = 0;//?
+    let W = [];//?
+    let cur_level = 1;//r
+    let levels/*G*/ = [{ //параметры уровней
             factor: 1.2, //скорость
             duration: 300, //продолжительность по времени
             multiplier: 0.5 //на сколько увелисиваются очки
@@ -167,19 +166,19 @@ var SinuousWorld = new function() {
             selectedLevel: 1,
             mute: false
         };
-        let H = {
-            x: -1.3,
+        let H /**/= {//направление "ветра"
+            x: 0,
             y: 1
         };
-    let  B = {
+    let  B = {//?
             fpsMin: 1000,
             fpsMax: 0
         };
-        let da = 1000;
-        let ea = 0;
-        let ha = (new Date).getTime();
-        let ga = 0;
-        let f = [];
+        let da = 1000;//?
+        let ea = 0;//?
+        let ha = (new Date).getTime();//?
+        let ga = 0;//?
+        let f = [];//очередная глобальная мусорка?
 
     function ba() {
         suportsLocalStorage() && (localStorage.unlockedLevels = o.unlockedLevels, localStorage.selectedLevel = o.selectedLevel, localStorage.mute = o.mute)
@@ -192,26 +191,26 @@ var SinuousWorld = new function() {
 
     function click_reset() {
         suportsLocalStorage() && (localStorage.unlockedLevels = null, localStorage.selectedLevel = null, o.unlockedLevels = 1,
-            r = o.selectedLevel = 1);
+            cur_level = o.selectedLevel = 1);//!
         P();
         event.preventDefault();
         alert("Game history was reset.")
     }
 
     function click_start(h) {
-        false == s && (s = !0, u = [], z = [], v = y = c = I = m = 0, r = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = lives-1, a.timewarped = false, a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0, menu.style.display =
+        false == to_start && (to_start = true, u = [], z = [], vg = cg = I = score = 0, cur_level = o.selectedLevel, a.trail = [], a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = lives-1, a.timewarped = false, a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0, menu.style.display =
             "none", game_status.style.display = "block", start_time = (new Date).getTime());
         h.preventDefault();
     }
 
     function qa() {
-        s = false;
+        to_start = false;
         menu.style.display = "block";
-        m = Math.round(m);
-        title.innerHTML = "Game Over! (" + m + " points)";
+        score = Math.round(score);
+        title.innerHTML = "Game Over! (" + score + " points)";
         scoreText = "<span>Last results:</span>";
-        scoreText += " Level <span>" + r + "</span>";
-        scoreText += " Score <span>" + Math.round(m) + "</span>";
+        scoreText += " Level <span>" + cur_level + "</span>";
+        scoreText += " Score <span>" + Math.round(score) + "</span>";
         scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - start_time) / 1000)) / 100 + "s</span>";
         game_status.innerHTML = scoreText;
     }
@@ -225,7 +224,7 @@ var SinuousWorld = new function() {
     }
 
     function Pa(a) {
-        "unlocked" == a.target.getAttribute("class") && (o.selectedLevel = parseInt(a.target.getAttribute("data-level")), r = o.selectedLevel, P(), ba());
+        "unlocked" == a.target.getAttribute("class") && (o.selectedLevel = parseInt(a.target.getAttribute("data-level")), cur_level = o.selectedLevel, P(), ba());
         a.preventDefault()
     }
 
@@ -242,8 +241,6 @@ var SinuousWorld = new function() {
     }
 
     function wa() {
-        i.width = 1000;
-        i.height = 600;
         world.width = i.width;
         world.height = i.height;
         Math.max(0.5 * (window.innerHeight - i.height), 5);
@@ -256,14 +253,13 @@ var SinuousWorld = new function() {
         for (g = 10 * g + Math.random() * 15 * g; 0 <= --g;) {
             let c = new Point;
             c.position.x = a.x + Math.sin(g) * b;
-            c.position.y =
-                a.y + Math.cos(g) * b;
+            c.position.y = a.y + Math.cos(g) * b;
             c.velocity = {
                 x: -4 + 8 * Math.random(),
                 y: -4 + 8 * Math.random()
             };
             c.alpha = 1;
-            U.push(c)
+            U.push(c);
         }
     }
 
@@ -281,7 +277,6 @@ var SinuousWorld = new function() {
     }
 
     function fa() {
-      //let k = 0;
         for (let h = W.length; h--;) {
             let t = W[h];
             b.clearRect(Math.floor(t.x), Math.floor(t.y), Math.ceil(t.width), Math.ceil(t.height))
@@ -290,40 +285,37 @@ var SinuousWorld = new function() {
         let h = (new Date).getTime();
         ga++;
         h > ha + 1000 && (B = Math.min(Math.round(1000 * ga / (h - ha)), M), da = Math.min(da, B), ea = Math.max(ea, B), ha = h, ga = 0);
-        let g = G[r - 1],
-            l = G[r],
+        let g = levels[cur_level - 1],
+            l = levels[cur_level],
             tq = g.multiplier;
         h = g.factor;
-        r < G.length &&
-            s && (h += I / g.duration * (l.factor - g.factor));
+        cur_level < levels.length && to_start && (h += I / g.duration * (l.factor - g.factor));
         l = 0.01 + 0.99 * (Math.max(Math.min(B, M), 0) / M);
         (l = l * l * tq) || (l = 0.5);
         let t = H.x * h * (1 - a.timefactor);
             g = H.y * h * (1 - a.timefactor);
         let d, j, f;
         j = 1 == a.flicker % 4 || 2 == a.flicker % 4;
-        if (s) {
+        if (to_start) {
             pp = a.clonePosition();
-            a.position.x += (E - a.position.x) * za;
-            a.position.y += (F - a.position.y) * za;
-            m += 0.4 * h * l;
-            m += 0.1 * a.distanceTo(pp) * l;
-            c++;
-            //k += 0.4 * h * l;
-            y += 0.1 * a.distanceTo(pp) * l;
+            a.position.x += (E - a.position.x) / 4;
+            a.position.y += (F - a.position.y) / 4;
+            score += 0.4 * h * l;
+            score += 0.1 * a.distanceTo(pp) * l;
+            cg++;
             a.flicker = Math.max(a.flicker - 1, 0);
             a.shield = Math.max(a.shield - 1, 0);
             a.gravity = Math.max(a.gravity - 0.35, 0);
-            a.timewarped ? (0.5999 < a.timefactor &&
-                (a.timewarped = false), a.timefactor += 0.1 * (0.6 - a.timefactor)) : a.timefactor += 0.002 * (0 - a.timefactor);
+            a.timewarped ? (0.5999 < a.timefactor && (a.timewarped = false), a.timefactor += 0.1 * (0.6 - a.timefactor)) : a.timefactor += 0.002 * (0 - a.timefactor);
             a.timefactor = Math.max(Math.min(a.timefactor, 1), 0);
             a.sizewarped ? (0.5999 < a.sizefactor && (a.sizewarped = false), a.sizefactor += 0.04 * (0.6 - a.sizefactor)) : a.sizefactor += 0.01 * (0 - a.sizefactor);
             a.sizefactor = Math.max(Math.min(a.sizefactor, 1), 0);
             a.gravitywarped ? (0.99995 < a.gravityfactor && (a.gravitywarped = false), a.gravityfactor += 0.04 * (1 - a.gravityfactor)) : (0.12 > a.gravityfactor && (a.gravityfactor = 0), a.gravityfactor += 0.014 * (0 - a.gravityfactor));
             a.gravityfactor = Math.max(Math.min(a.gravityfactor, 1), 0);
-            if (0 < a.shield && (100 < a.shield || 0 != a.shield % 3)) d = a.size * (Math.min(a.shield, 100) / 50), b.beginPath(), b.fillStyle = S_EFFECT_COLOR_1, b.strokeStyle = S_EFFECT_COLOR_2, b.arc(a.position.x, a.position.y, d, 0, 2 * Math.PI, !0), b.fill(), b.stroke(), C(a.position.x, a.position.y, d + 2);
+            if (0 < a.shield && (100 < a.shield || 0 != a.shield % 3)) d = a.size * (Math.min(a.shield, 100) / 50), b.beginPath(), b.fillStyle = S_EFFECT_COLOR_1, b.strokeStyle = S_EFFECT_COLOR_2, b.arc(a.position.x,
+              a.position.y, d, 0, 2 * Math.PI, true), b.fill(), b.stroke(), C(a.position.x, a.position.y, d + 2);
             0 < a.gravityfactor && (f = a.gravityfactor * Aa, d = b.createRadialGradient(a.position.x, a.position.y, 0, a.position.x, a.position.y, f), d.addColorStop(0.1, G_EFFECT_COLOR_1), d.addColorStop(0.8, G_EFFECT_COLOR_2),
-                b.beginPath(), b.fillStyle = d, b.arc(a.position.x, a.position.y, f, 0, 2 * Math.PI, !0), b.fill(), C(a.position.x, a.position.y, f));
+                b.beginPath(), b.fillStyle = d, b.arc(a.position.x, a.position.y, f, 0, 2 * Math.PI, true), b.fill(), C(a.position.x, a.position.y, f));
             for (; 60 > a.trail.length - 1;) a.trail.push(new Point(a.position.x, a.position.y));
             b.beginPath();
             b.strokeStyle = j ? "333333" : TAIL_COLOR;
@@ -340,51 +332,51 @@ var SinuousWorld = new function() {
             f = 0;
             for (d = a.trail.length - 1; 0 < d; d--) {
                 p = a.trail[d];
-                if (d == Math.round(51) || d == Math.round(45) || d == Math.round(39)) b.beginPath(), b.lineWidth = 0.5, b.fillStyle = j ? DEATH_COLOR : CHILD_COLOR , b.arc(p.position.x, p.position.y, 2.5, 0, 2 * Math.PI, !0), b.fill(), C(p.position.x, p.position.y, 8), f++;
+                if (d == Math.round(51) || d == Math.round(45) || d == Math.round(39)) b.beginPath(), b.lineWidth = 0.5, b.fillStyle = j ? DEATH_COLOR : CHILD_COLOR , b.arc(p.position.x, p.position.y, 2.5, 0, 2 * Math.PI, true), b.fill(), C(p.position.x, p.position.y, 8), f++;
                 if (f == a.lives) break
             }
             60 < a.trail.length && a.trail.shift();
             b.beginPath();
             b.fillStyle =
                 j ? DEATH_COLOR : HEAD_COLOR;
-            b.arc(a.position.x, a.position.y, a.size / 2, 0, 2 * Math.PI, !0);
+            b.arc(a.position.x, a.position.y, a.size / 2, 0, 2 * Math.PI, true);
             b.fill();
             C(a.position.x, a.position.y, a.size + 6)
         }
-        if (s && (0 > a.position.x || a.position.x > i.width || 0 > a.position.y || a.position.y > i.height)) L(a.position, 10), qa();
+        if (to_start && (0 > a.position.x || a.position.x > i.width || 0 > a.position.y || a.position.y > i.height)) L(a.position, 10), qa();
         for (d = 0; d < u.length; d++) {
             p = u[d];
             p.size = p.originalSize * (1 - a.sizefactor);
             p.offset.x *= 0.95;
             p.offset.y *= 0.95;
             j = p.distanceTo(a.position);
-            if (s)
+            if (to_start)
                 if (0 < a.gravityfactor) q = Math.atan2(p.position.y - a.position.y, p.position.x - a.position.x), f = a.gravityfactor * Aa, j < f && (p.offset.x += 0.2 * (Math.cos(q) *
                     (f - j) - p.offset.x), p.offset.y += 0.2 * (Math.sin(q) * (f - j) - p.offset.y));
                 else if (0 < a.shield && j < 0.5 * (4 * a.size + p.size)) {
                 L(p.position, 10);
                 u.splice(d, 1);
                 d--;
-                m += 20 * l;
-                v += 20 * l;
+                score += 20 * l;
+                vg += 20 * l;
                 X(Math.ceil(20 * l), p.clonePosition(), p.force);
                 continue
             } else j < 0.5 * (a.size + p.size) && 0 == a.flicker && (0 < a.lives ? (L(a.position, 4), a.lives--, a.flicker += 60, u.splice(d, 1), d--) : (L(a.position, 10), qa()));
             b.beginPath();
             b.fillStyle = POINT_COLOR;
-            b.arc(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size / 2, 0, 2 * Math.PI, !0);//форма поинта
+            b.arc(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size / 2, 0, 2 * Math.PI, true);//форма поинта
             b.fill();
             C(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size);
             p.position.x += t * p.force;//направление движения точек
             p.position.y += g * p.force;
-            if (p.position.x < -p.size || p.position.y > i.height + p.size) u.splice(d, 1), d--, s && I++
+            if (p.position.x < -p.size || p.position.y > i.height + p.size) u.splice(d, 1), d--, to_start && I++;
         }
         for (d = 0; d < z.length; d++) {
             p = z[d];
-            if (p.distanceTo(a.position) < 0.5 * (a.size + p.size) && s) {
-                p.type == "shield" ? (a.shield = 300) : p.type == "life" ? a.lives < lives && (X("LIFE UP!", p.clonePosition(), p.force), a.lives = Math.min(a.lives + 1, lives)) : p.type == "gravitywarp" ? a.gravitywarped = !0 : p.type == "timewarp" ? a.timewarped = !0 : p.type == "sizewarp" && (a.sizewarped = !0);
-                p.type != "life" && (m += 50 * l, v += 50 * l, X(Math.ceil(50 * l), p.clonePosition(), p.force));
-                for (j = 0; j < u.length; j++) e = u[j], 100 > e.distanceTo(p.position) && (L(e.position, 10), u.splice(j, 1), j--, m += 20 * l, v += 20 * l, X(Math.ceil(20 * l), e.clonePosition(), e.force));
+            if (p.distanceTo(a.position) < 0.5 * (a.size + p.size) && to_start) {
+                p.type == "shield" ? (a.shield = 300) : p.type == "life" ? a.lives < lives && (X("LIFE UP!", p.clonePosition(), p.force), a.lives = Math.min(a.lives + 1, lives)) : p.type == "gravitywarp" ? a.gravitywarped = true : p.type == "timewarp" ? a.timewarped = true : p.type == "sizewarp" && (a.sizewarped = true);
+                p.type != "life" && (score += 50 * l, vg += 50 * l, X(Math.ceil(50 * l), p.clonePosition(), p.force));
+                for (j = 0; j < u.length; j++) e = u[j], 100 > e.distanceTo(p.position) && (L(e.position, 10), u.splice(j, 1), j--, score += 20 * l, vg += 20 * l, X(Math.ceil(20 * l), e.clonePosition(), e.force));
                 z.splice(d, 1);
                 d--
             } else if (p.position.x < -p.size || p.position.y > i.height + p.size) z.splice(d, 1), d--;
@@ -395,7 +387,7 @@ var SinuousWorld = new function() {
                 p.type === "sizewarp" && (j = "M", f = M_COLOR);
             b.beginPath();
             b.fillStyle = f;
-            b.arc(p.position.x, p.position.y, p.size / 2, 0, 2 * Math.PI, !0);
+            b.arc(p.position.x, p.position.y, p.size / 2, 0, 2 * Math.PI, true);
             b.fill();
             b.save();
             b.font = "bold 12px Arial";
@@ -412,22 +404,22 @@ var SinuousWorld = new function() {
                 new la; h.type == "life" && a.lives >= lives;) h.randomizeType();
             z.push(Ba(h))
         }
-        1 == a.shield && s;
+        1 == a.shield && to_start;
         for (d = 0; d < U.length; d++)
             p = U[d], p.velocity.x += 0.04 * (tq - p.velocity.x), p.velocity.y += 0.04 * (g - p.velocity.y), p.position.x += p.velocity.x, p.position.y += p.velocity.y, p.alpha -= 0.02, b.fillStyle = /*цвет всплесков*/"rgba(255,255,255," + Math.max(p.alpha, 0) + ")", b.fillRect(p.position.x, p.position.y, 1, 1), C(p.position.x, p.position.y, 2), 0 >= p.alpha && U.splice(d, 1);
         for (d = 0; d < aa.length; d++)
         p = aa[d], p.position.x += t * p.force, p.position.y += g * p.force, p.position.y -= 1, h = b.measureText(p.text).width, l = p.position.x - 0.5 * h, b.save(), b.font = "10px Arial", b.fillStyle = "rgba( 255, 255, 255, " + p.alpha + " )"/*цвет очков*/, b.fillText(p.text, l, p.position.y), b.restore(), V(l - 5, p.position.y - 12, h + 8, 22), p.alpha *= 0.96, 0.05 > p.alpha && (aa.splice(d, 1), d--);
-        n.message && "" !== n.message && (n.progress += 0.05 * (n.target - n.progress), 0.9999999 < n.progress ? n.target = 0 : 0 == n.target && 0.05 > n.progress && (n.message = ""), b.save(), b.font = "bold 22px Arial", p = {
-            x: i.width - b.measureText(n.message).width - 15,
-            y: i.height + 40 - 55 * n.progress
-        }, b.translate(p.x, p.y), b.fillStyle = /*цвет уровня*/"rgba( 0, 0, 0, " + 0.4 * n.progress + " )", b.fillRect(-15, -30, 200, 100), b.fillStyle = "rgba( 255, 255, 255, " + n.progress + " )", b.fillText(n.message, 0, 0), V(p.x - 15, p.y - 30, 200, 100), b.restore());
-        if (s) {
-            if (h = I > G[r - 1].duration)
-                r < G.length ? (r++, I = 0, o.unlockedLevels = Math.max(o.unlockedLevels, r), ba(), P(), h = !0) : h = false;
-            h && (n.message = "LEVEL " + r + "!", n.progress = 0, n.target = 1);
+        last_results.message && "" !== last_results.message && (last_results.progress += 0.05 * (last_results.target - last_results.progress), 0.9999999 < last_results.progress ? last_results.target = 0 : 0 == last_results.target && 0.05 > last_results.progress && (last_results.message = ""), b.save(), b.font = "bold 22px Arial", p = {
+            x: i.width - b.measureText(last_results.message).width - 15,
+            y: i.height + 40 - 55 * last_results.progress
+        }, b.translate(p.x, p.y), b.fillStyle = /*цвет уровня*/"rgba( 0, 0, 0, " + 0.4 * last_results.progress + " )", b.fillRect(-15, -30, 200, 100), b.fillStyle = "rgba( 255, 255, 255, " + last_results.progress + " )", b.fillText(last_results.message, 0, 0), V(p.x - 15, p.y - 30, 200, 100), b.restore());
+        if (to_start) {
+            if (h = I > levels[cur_level - 1].duration)
+                cur_level < levels.length ? (cur_level++, I = 0, o.unlockedLevels = Math.max(o.unlockedLevels, cur_level), ba(), P(), h = true) : h = false;
+            h && (last_results.message = "LEVEL " + cur_level + "!", last_results.progress = 0, last_results.target = 1);
             scoreText = "<span>Last results:</span>";
-            scoreText += " Level <span>" + r + "</span>";
-            scoreText += " Score <span>" + Math.round(m) + "</span>";
+            scoreText += " Level <span>" + cur_level + "</span>";
+            scoreText += " Score <span>" + Math.round(score) + "</span>";
             scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - start_time) / 1000)) / 100 + "s</span>";
             game_status.innerHTML = scoreText;
         }
@@ -519,7 +511,7 @@ var SinuousWorld = new function() {
             }
             g = "";
             c = 1;
-            for (f = G.length; c <= f; c++) g += '<li data-level="' + c + '">' + c + "</li>";
+            for (f = levels.length; c <= f; c++) g += '<li data-level="' + c + '">' + c + "</li>";
             level_selector.getElementsByTagName("ul")[0].innerHTML = g;
             g = level_selector.getElementsByTagName("li");
             c = 0;
@@ -534,7 +526,7 @@ var SinuousWorld = new function() {
         }
     };
     this.pause = function() {
-        ma = !0;
+        ma = true;
     };
     this.resume = function() {
         ma = false;
@@ -552,8 +544,8 @@ var SinuousWorld = new function() {
     }
 };
 window.requestAnimFrame = function() {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(c) {
-        window.setTimeout(c, 1000 / 60);
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(cg) {
+        window.setTimeout(cg, 1000 / 60);
     }
 }();
 
