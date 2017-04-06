@@ -16,7 +16,7 @@ const G_EFFECT_COLOR_1 = "rgba(252, 219, 162, 0.6)";
 const G_EFFECT_COLOR_2 = "rgba(252, 145, 58, 0)";
 
 function suportsLocalStorage() {
-    return "localStorage" in window && null !== window.localStorage
+    return "localStorage" in window && null !== window.localStorage;
 }
 
 class Point {
@@ -41,16 +41,11 @@ class Point {
     }
 }
 
-class Region {
+class Region {//крч, если убрать - то от хвоста остаются следы
   constructor() {
       this.top = this.left = 999999;
       this.bottom = this.right = 0
   }
-
-  reset() {
-      this.top = this.left = 999999;
-      this.bottom = this.right = 0
-  };
 
   inflate(c, k) {
       this.left = Math.min(this.left, c);
@@ -66,20 +61,6 @@ class Region {
       this.bottom += 2 * k;
   };
 
-  contains(c, k) {
-      return c > this.left && c < this.right && k > this.top && k < this.bottom;
-  };
-
-  size() {
-      return (this.right - this.left + (this.bottom - this.top)) / 2;
-  };
-
-  center() {
-      let x = this.left + (this.right - this.left) / 2;
-      let y = this.top + (this.bottom - this.top) / 2;
-      return new Point(x, y);
-  };
-
   toRectangle() {
       return {
           x: this.left,
@@ -91,9 +72,8 @@ class Region {
 
 }
 
-
-var SinuousWorld = new function() {
-    let cg = 0; let vg = 0;//говнопеременные
+var ElkinsWorld = new function() {
+    let ag = 0; let bg = 0;//говнопеременные
     const M = 60;//?
     const lives = 3;//ia
     const Aa = 120;//?
@@ -104,7 +84,7 @@ var SinuousWorld = new function() {
             width: 1000,
             height: 600
         };
-    let world;let b;let menu;let level_selector;let start_button;let reset_button = null;
+    let world;let b;let level_selector;let start_button;let reset_button = null;
     let last_results = {
             message: "",
             progress: 0,
@@ -198,17 +178,17 @@ var SinuousWorld = new function() {
     }
 
     function click_start(h) {
-        false == to_start && (to_start = true, u = [], z = [], vg = cg = I = score = 0, cur_level = o.selectedLevel, a.trail = [],
+        false == to_start && (to_start = true, u = [], z = [], bg = ag = I = score = 0, cur_level = o.selectedLevel, a.trail = [],
           a.position.x = E, a.position.y = F, a.shield = 0, a.gravity = 0, a.flicker = 0, a.lives = lives-1, a.timewarped = false,
           a.timefactor = 0, a.sizewarped = false, a.sizefactor = 0, a.gravitywarped = false, a.gravityfactor = 0,
-          menu.style.display = "none", game_status.style.display = "block", start_time = (new Date).getTime(),
-          level_selector.style.right = "9px", level_selector.style.top = "0px", world.style.cursor= "default"/*"none"*/);//кастыль 
+          start_button.style.display = "none", game_status.style.display = "block", start_time = (new Date).getTime(),
+          level_selector.style.right = "9px", level_selector.style.top = "0px", world.style.cursor= "default"/*"none"*/);//кастыль
         h.preventDefault();
     }
 
     function death() {//после смерти
         to_start = false;
-        menu.style.display = "block";
+        start_button.style.display = "block";
         world.style.cursor= "default";
         score = Math.round(score);
         scoreText = "<span>Last results:</span>";
@@ -227,11 +207,12 @@ var SinuousWorld = new function() {
 
     function Pa(a) {
         "unlocked" == a.target.getAttribute("class") && (o.selectedLevel = parseInt(a.target.getAttribute("data-level")), cur_level = o.selectedLevel, P(), ba());
-        a.preventDefault()
+        a.preventDefault();
     }
 
     function mouse_move(a) {
-        (E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6, F = a.clientY - 0.55 * (window.innerHeight - i.height) - 6)
+        E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6;
+        F = a.clientY - 0.55 * (window.innerHeight - i.height) - 6;
     }
 
     function touch_start(a) {
@@ -247,7 +228,7 @@ var SinuousWorld = new function() {
         world.height = i.height;
         Math.max(0.5 * (window.innerHeight - i.height), 5);
         let a = 6;
-        //(menu.style.left = a + "px", menu.style.top = Math.round(i.height / 4) + "px", game_status.style.left = a + "px", game_status.style.top = a + "px");
+        //(start_button.style.left = a + "px", start_button.style.top = Math.round(i.height / 4) + "px", game_status.style.left = a + "px", game_status.style.top = a + "px");
     }
 
     function L(a, b, g) {
@@ -304,7 +285,7 @@ var SinuousWorld = new function() {
             a.position.y += (F - a.position.y) / 4;
             score += 0.4 * h * l;
             score += 0.1 * a.distanceTo(pp) * l;
-            cg++;
+            ag++;
             a.flicker = Math.max(a.flicker - 1, 0);
             a.shield = Math.max(a.shield - 1, 0);
             a.gravity = Math.max(a.gravity - 0.35, 0);
@@ -320,12 +301,14 @@ var SinuousWorld = new function() {
                 b.beginPath(), b.fillStyle = d, b.arc(a.position.x, a.position.y, f, 0, 2 * Math.PI, true), b.fill(), C(a.position.x, a.position.y, f));
             for (; 60 > a.trail.length - 1;) a.trail.push(new Point(a.position.x, a.position.y));
             b.beginPath();
-            b.strokeStyle = j ? "333333" : TAIL_COLOR;
-            b.lineWidth = 2;
+            b.strokeStyle = j ? "#333333" : TAIL_COLOR;
+            b.lineWidth = 2;//толщина хвоста
             var q = new Region;
             d = 0;
-            for (f = a.trail.length; d < f; d++) p = a.trail[d], p2 = a.trail[d + 1], 0 == d ? b.moveTo(p.position.x, p.position.y) : p2 && b.quadraticCurveTo(p.position.x, p.position.y, p.position.x + (p2.position.x - p.position.x) / 2, p.position.y + (p2.position.y - p.position.y) /
-                2), q.inflate(p.position.x, p.position.y), p.position.x += t, p.position.y += g;
+            for (f = a.trail.length; d < f; d++)
+                p = a.trail[d], p2 = a.trail[d + 1], 0 == d ? b.moveTo(p.position.x, p.position.y) :
+                p2 && b.quadraticCurveTo(p.position.x, p.position.y, p.position.x + (p2.position.x - p.position.x) / 2, p.position.y + (p2.position.y - p.position.y) / 2),
+                q.inflate(p.position.x, p.position.y), p.position.x += t, p.position.y += g;
             q.expand(10, 10);
             d = q.toRectangle();
             V(d.x, d.y, d.width, d.height);
@@ -334,13 +317,14 @@ var SinuousWorld = new function() {
             f = 0;
             for (d = a.trail.length - 1; 0 < d; d--) {
                 p = a.trail[d];
-                if (d == Math.round(51) || d == Math.round(45) || d == Math.round(39)) b.beginPath(), b.lineWidth = 0.5, b.fillStyle = j ? DEATH_COLOR : CHILD_COLOR , b.arc(p.position.x, p.position.y, 2.5, 0, 2 * Math.PI, true), b.fill(), C(p.position.x, p.position.y, 8), f++;
+                if (d == Math.round(51) || d == Math.round(45) || d == Math.round(39))
+                    b.beginPath(), b.lineWidth = 0.5, b.fillStyle = j ? DEATH_COLOR : CHILD_COLOR , b.arc(p.position.x, p.position.y, 2.5, 0, 2 * Math.PI, true),
+                    b.fill(), C(p.position.x, p.position.y, 8), f++;
                 if (f == a.lives) break
             }
             60 < a.trail.length && a.trail.shift();
             b.beginPath();
-            b.fillStyle =
-                j ? DEATH_COLOR : HEAD_COLOR;
+            b.fillStyle = j ? DEATH_COLOR : HEAD_COLOR;
             b.arc(a.position.x, a.position.y, a.size / 2, 0, 2 * Math.PI, true);
             b.fill();
             C(a.position.x, a.position.y, a.size + 6)
@@ -360,7 +344,7 @@ var SinuousWorld = new function() {
                 u.splice(d, 1);
                 d--;
                 score += 20 * l;
-                vg += 20 * l;
+                bg += 20 * l;
                 X(Math.ceil(20 * l), p.clonePosition(), p.force);
                 continue
             } else j < 0.5 * (a.size + p.size) && 0 == a.flicker && (0 < a.lives ? (L(a.position, 4), a.lives--, a.flicker += 60, u.splice(d, 1), d--) : (L(a.position, 10), death()));
@@ -377,8 +361,8 @@ var SinuousWorld = new function() {
             p = z[d];
             if (p.distanceTo(a.position) < 0.5 * (a.size + p.size) && to_start) {
                 p.type == "shield" ? (a.shield = 300) : p.type == "life" ? a.lives < lives && (X("LIFE UP!", p.clonePosition(), p.force), a.lives = Math.min(a.lives + 1, lives)) : p.type == "gravitywarp" ? a.gravitywarped = true : p.type == "timewarp" ? a.timewarped = true : p.type == "sizewarp" && (a.sizewarped = true);
-                p.type != "life" && (score += 50 * l, vg += 50 * l, X(Math.ceil(50 * l), p.clonePosition(), p.force));
-                for (j = 0; j < u.length; j++) e = u[j], 100 > e.distanceTo(p.position) && (L(e.position, 10), u.splice(j, 1), j--, score += 20 * l, vg += 20 * l, X(Math.ceil(20 * l), e.clonePosition(), e.force));
+                p.type != "life" && (score += 50 * l, bg += 50 * l, X(Math.ceil(50 * l), p.clonePosition(), p.force));
+                for (j = 0; j < u.length; j++) e = u[j], 100 > e.distanceTo(p.position) && (L(e.position, 10), u.splice(j, 1), j--, score += 20 * l, bg += 20 * l, X(Math.ceil(20 * l), e.clonePosition(), e.force));
                 z.splice(d, 1);
                 d--
             } else if (p.position.x < -p.size || p.position.y > i.height + p.size) z.splice(d, 1), d--;
@@ -400,10 +384,9 @@ var SinuousWorld = new function() {
             p.position.x += t * p.force;
             p.position.y += g * p.force;
         }
-        u.length < 27 * h && u.push(Ba(new Ca));
+        u.length < 27 * h && u.push(Ba(new Ball));
         if (1 > z.length && 0.994 < Math.random() && false == a.isBoosted()) {
-            for (h =
-                new la; h.type == "life" && a.lives >= lives;) h.randomizeType();
+            for (h = new Pill; h.type == "life" && a.lives >= lives;) h.randomizeType();
             z.push(Ba(h))
         }
         1 == a.shield && to_start;
@@ -440,8 +423,9 @@ var SinuousWorld = new function() {
     }
 
     function Ba(a) {
-        0.5 < Math.random() ? (a.position.x = Math.random() * i.width, a.position.y = -20) : (a.position.x = i.width + 20, a.position.y = 0.2 * -i.height + 1.2 * Math.random() * i.height);
-        return a
+        0.5 < Math.random() ? (a.position.x = Math.random() * i.width, a.position.y = -20) :
+        (a.position.x = i.width + 20, a.position.y = 0.2 * -i.height + 1.2 * Math.random() * i.height);
+        return a;
     }
 
     function na() {
@@ -462,7 +446,7 @@ var SinuousWorld = new function() {
         this.sizefactor = 0
     }
 
-    function Ca() {
+    function Ball() {
         this.position = {
             x: 0,
             y: 0
@@ -472,23 +456,22 @@ var SinuousWorld = new function() {
             y: 0
         };
         this.originalSize = this.size = 10 + 4 * Math.random();
-        this.force = 1 + 0.1 * Math.random()//скорость поинтов!!!
+        this.force = 1.5 + 0.1 * Math.random()//скорость поинтов!!!
     }
 
-    function la() {
+    function Pill() {
         this.type = null;
         this.position = {
             x: 0,
             y: 0
         };
         this.size = 30 + 4 * Math.random();
-        this.force = 0.8 + 1 * Math.random();//скорость плюшек!!!
+        this.force = 1 + 1 * Math.random();//скорость плюшек!!!
         this.randomizeType()
     }
 
     this.initialize = function() {
         world = document.getElementById("world");//q
-        menu = document.getElementById("menu");//x
         game_status = document.getElementById("game-status");//w
         level_selector = document.getElementById("level-selector");//R
         start_button = document.getElementById("start-button");//Ea
@@ -522,7 +505,7 @@ var SinuousWorld = new function() {
             (game_status.style.width = i.width + "px", world.style.border = "none", H.x *= 2, H.y *= 2);
             fa();
             world.style.display = "block";
-            menu.style.display = "block";
+            start_button.style.display = "block";
         }
     };
     this.pause = function() {
@@ -537,16 +520,16 @@ var SinuousWorld = new function() {
     na.prototype.isBoosted = function() {
         return 0 != this.shield || 0 != this.gravityfactor;
     };
-    Ca.prototype = new Point;
-    la.prototype = new Point;
-    la.prototype.randomizeType = function() {
+    Ball.prototype = new Point;
+    Pill.prototype = new Point;
+    Pill.prototype.randomizeType = function() {
         this.type = Da[Math.round(Math.random() * (Da.length - 1))];
     }
 };
 window.requestAnimFrame = function() {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(cg) {
-        window.setTimeout(cg, 1000 / 60);
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(ag) {
+        window.setTimeout(ag, 1000 / 60);
     }
 }();
 
-SinuousWorld.initialize();
+ElkinsWorld.initialize();

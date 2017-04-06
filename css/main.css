@@ -1,155 +1,181 @@
-@font-face {
-	font-family: Helvetica;
+@font-face
+{
+		font-family: Helvetica;
 }
 
-html, body {
-	font-family: Helvetica, Arial, sans-serif;
-	background-image: url(../img/bg.jpg);
-	background-size: 100%;
-	background-color: #016ecd;
-	font-size: 12px;
-	overflow: hidden;
-	height: 100%;
+html, body
+{
+		background-color: #016ecd;
+		background-image: url(../img/bg.jpg);
+		background-size: 100%;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 12px;
+		height: 100%;
+		overflow: hidden;
 }
 
-header {
-	margin: 0;
-	padding: 0 8px 8px 8px;
-	background-color: #000;
-	opacity: 0.4;
-	color: #999;
-	overflow: hidden;
-	width: 100%;
-	height: 27px;
-	z-index: 5;
-	position: relative;
-	transition: height .22s ease-out;
-	-o-transition: height .22s ease-out;
-	-moz-transition: height .22s ease-out;
-	-webkit-transition: height .22s ease-out;
+header
+{
+		background-color: #000;
+		color: #999;
+		height: 27px;
+		margin: 0;
+		opacity: 0.4;
+		overflow: hidden;
+		padding: 0 8px 8px 8px;
+		position: relative;
+		width: 100%;
+		z-index: 5;
+		transition: height .22s ease-out;
+		moz-transition: height .22s ease-out;
+		o-transition: height .22s ease-out;
+		webkit-transition: height .22s ease-out;
 }
 
-#game-status {
-		 width: 984px;
-		 height: 15px;
-		 padding: 7px 0;
-		 display: none;
-		 z-index: 2;
-	}
+#game-status
+{
+		display: none;
+		height: 15px;
+		padding: 7px 0;
+		width: 984px;
+		z-index: 2;
+}
 
-#game-status span {
+#game-status span
+{
 		color: #777;
 		font-weight: bold;
 		margin-right: 5px;
 }
 
-#game-status span:first-of-type{
-		font-size: 15px;
+#game-status span:first-of-type
+{
 		color: #555;
+		font-size: 15px;
 }
 
-#game {
-	position: relative;
-	left: 50%;
-	top: 50%;
-	margin-left: -500px;
-	margin-top: -317px;
-	z-index: 1;
+#game
+{
+		left: 50%;
+		margin-left: -500px;
+		margin-top: -317px;
+		position: relative;
+		top: 50%;
+		z-index: 1;
 }
 
-#menu{
-	position: absolute;
-	z-index: 3;
-	left: 6px;
-	top: 150px;
-	display: block;
-	padding: 16px;
-	margin-top: 10px;
-	width: 240px;
+#menu
+{
+		display: block;
+		left: 6px;
+		margin-top: 10px;
+		padding: 16px;
+		position: absolute;
+		top: 150px;
+		width: 240px;
+		z-index: 3;
 }
 
-#level-selector {
-	font-size: 11px;
-	position: absolute;
-	right: 9px;
-	margin: 12px 10px;
+#level-selector
+{
+		font-size: 11px;
+		margin: 12px 10px;
+		position: absolute;
+		right: 9px;
 }
 
-#level-selector ul {
-	margin: 10px 0;
-	display: inline;
-	padding: 4px;
+#level-selector ul
+{
+		display: inline;
+		margin: 10px 0;
+		padding: 4px;
 }
 
-#level-selector ul li {
-	display: inline;
-	margin: 1px;
-	padding: 5px;
-	background-color: #333;
-	cursor: pointer;
-	border-radius: 1px;
-	color: #fff;
-	transition: all .1s ease-out;
-	-o-transition: all .1s ease-out;
-	-moz-transition: all .1s ease-out;
-	-webkit-transition: all .1s ease-out;
+#level-selector ul li
+{
+		background-color: #333;
+		border-radius: 1px;
+		color: #fff;
+		cursor: pointer;
+		display: inline;
+		margin: 1px;
+		padding: 5px;
+		transition: all .1s ease-out;
+		moz-transition: all .1s ease-out;
+		o-transition: all .1s ease-out;
+		webkit-transition: all .1s ease-out;
 }
 
-#level-selector ul li.unlocked:hover {
-	background: #555;
+#level-selector ul li.unlocked:hover
+{
+		background: #555;
 }
 
-#level-selector ul li.selected {
-	cursor: default;
-	background: #999;
-	padding: 5px 9px;
+#level-selector ul li.selected
+{
+		background: #999;
+		cursor: default;
+		padding: 5px 9px;
 }
 
-#level-selector ul li.locked {
-	opacity: 0.5;
-	cursor: default;
-	color: #555;
+#level-selector ul li.locked
+{
+		color: #555;
+		cursor: default;
+		opacity: 0.5;
 }
 
-.button{
-	outline: none;
-	font-family: Helvetica;
-	text-decoration: none;
-	transition: all .18s linear;
-	-o-transition: all .18s linear;
-	-moz-transition: all .18s linear;
-	-webkit-transition: all .18s linear;
+.button
+{
+		font-family: Helvetica;
+		outline: none;
+		text-decoration: none;
+		transition: all .18s linear;
+		webkit-transition: all .18s linear;
+		moz-transition: all .18s linear;
+		o-transition: all .18s linear;
 }
 
-#start-button{
-	display: block;
-	font-family: "HelveticaNeue-Thin";
-	font-size: 120px;
-	color: rgba(200,200,200,0.5);
-	padding: 2px;
+#start-button
+{
+		color: rgba(200,200,200,0.5);
+		display: block;
+		font-family: "HelveticaNeue-Thin","Helvetica Neue Thin", Helvetica;
+		font-size: 120px;
+		left: 20px;
+		margin-top: 10px;
+		padding: 16px;
+		padding: 2px;
+		position: absolute;
+		top: 150px;
+		width: 240px;
+		z-index: 3;
 }
 
-#reset-button {
-	display: inline;
-	font-size: 11px;
-	color: #888;
-	padding: 2px;
+#reset-button
+{
+		color: #888;
+		display: inline;
+		font-size: 11px;
+		padding: 2px;
 }
 
-#start-button:hover, #reset-button:hover {
-	color: #fff;
-	transition: all .18s linear;
-	-o-transition: all .18s linear;
-	-moz-transition: all .18s linear;
-	-webkit-transition: all .18s linear;
+#start-button:hover, #reset-button:hover
+{
+		color: #fff;
+		transition: all .18s linear;
+		moz-transition: all .18s linear;
+		o-transition: all .18s linear;
+		webkit-transition: all .18s linear;
 }
 
-canvas {
-	width: 1000px;
-	height: 600px;
-	cursor: default;
-	background-color: rgba(0,0,0,0.7);
-	border: 0px;
-	border-radius: 4px;
-	display: block;
+canvas
+{
+		background-color: rgba(0,0,0,0.7);
+		border: 0px;
+		border-radius: 4px;
+		cursor: default;
+		display: block;
+		height: 600px;
+		width: 1000px;
 }
