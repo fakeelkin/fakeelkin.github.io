@@ -232,7 +232,7 @@ var ElkinsWorld = new function() {
         }
     }
 
-    function Pa(a) {
+    function setect_level(a) {
         if ("unlocked" == a.target.getAttribute("class")){
             o.selectedLevel = parseInt(a.target.getAttribute("data-level"));
             cur_level = o.selectedLevel;
@@ -255,12 +255,10 @@ var ElkinsWorld = new function() {
         1 == a.touches.length && (a.preventDefault(), E = a.touches[0].pageX - 0.5 * (window.innerWidth - i.width) - 60, F = a.touches[0].pageY - 0.5 * (window.innerHeight - i.height) - 30)
     }
 
-    function wa() {
+    function set_world_size() {
         world.width = i.width;
         world.height = i.height;
-        Math.max(0.5 * (window.innerHeight - i.height), 5);
-        let a = 6;
-        //(start_button.style.left = a + "px", start_button.style.top = Math.round(i.height / 4) + "px", game_status.style.left = a + "px", game_status.style.top = a + "px");
+        //Math.max(0.5 * (window.innerHeight - i.height), 5);
     }
 
     function L(a, b, g) {
@@ -659,17 +657,24 @@ var ElkinsWorld = new function() {
     }
 
     function Ba(a) {
-        0.5 < Math.random() ? (a.position.x = Math.random() * i.width, a.position.y = -20) : (a.position.x = i.width + 20, a.position.y = 0.2 * -i.height + 1.2 * Math.random() * i.height);
+        if(0.5 < Math.random()){
+            a.position.x = Math.random() * i.width;
+            a.position.y = -20;
+        }
+        else {
+            a.position.x = i.width + 20
+            a.position.y = 0.2 * -i.height + 1.2 * Math.random() * i.height;
+        }
         return a;
     }
 
-    function na() {
+    function initial_values() {
         this.position = {
             x: 0,
             y: 0
         };
         this.trail = [];
-        this.size = 8;
+        this.size = 12;
         this.shield = 0;
         this.lives = lives-1;
         this.flicker = 0;
@@ -691,7 +696,7 @@ var ElkinsWorld = new function() {
             y: 0
         };
         this.originalSize = this.size = 10 + 4 * Math.random();
-        this.force = 1.5 + 0.1 * Math.random()//скорость поинтов!!!
+        this.force = 1.5 + 0.1 * Math.random();//скорость поинтов!!!
     }
 
     function Pill() {
@@ -702,7 +707,7 @@ var ElkinsWorld = new function() {
         };
         this.size = 30 + 4 * Math.random();
         this.force = 1 + 1 * Math.random();//скорость плюшек!!!
-        this.randomizeType()
+        this.randomizeType();
     }
 
     this.initialize = function() {
@@ -718,7 +723,7 @@ var ElkinsWorld = new function() {
             document.addEventListener("touchmove", touch_move, false);//Ya
             start_button.addEventListener("click", click_start, false);
             reset_button.addEventListener("click", click_reset, false);
-            window.addEventListener("resize", wa, false);
+            window.addEventListener("resize", set_world_size, false);
             if (suportsLocalStorage()) {
                 var c = parseInt(localStorage.unlockedLevels),
                     f = parseInt(localStorage.selectedLevel),
@@ -729,34 +734,32 @@ var ElkinsWorld = new function() {
             }
             g = "";
             c = 1;
-            for (f = levels.length; c <= f; c++) g += '<li data-level="' + c + '">' + c + "</li>";
+            for (f = levels.length; c <= f; c++)
+                g += '<li data-level="' + c + '">' + c + "</li>";
             level_selector.getElementsByTagName("ul")[0].innerHTML = g;
             g = level_selector.getElementsByTagName("li");
             c = 0;
-            for (f = g.length; c < f; c++) g[c].addEventListener("click", Pa, false);
+            for (f = g.length; c < f; c++)
+                g[c].addEventListener("click", setect_level, false);
             reset_level_status();
-            a = new na;
-            wa();
-            (game_status.style.width = i.width + "px", world.style.border = "none", H.x *= 2, H.y *= 2);
+            a = new initial_values;
+            set_world_size();
+            //game_status.style.width = i.width + "px";
+            //world.style.border = "none";
+            H.x *= 2;
+            H.y *= 2;
             fa();
             world.style.display = "block";
             start_button.style.display = "block";
         }
     };
-    this.pause = function() {
-        ma = true;
-    };
-    this.resume = function() {
-        ma = false;
-        suportsLocalStorage() && "false" == localStorage.mute;
-        fa();
-    };
-    na.prototype = new Point;
-    na.prototype.isBoosted = function() {
+
+    initial_values.prototype = new Point;//?
+    initial_values.prototype.isBoosted = function() {
         return 0 != this.shield || 0 != this.gravityfactor;
     };
-    Ball.prototype = new Point;
-    Pill.prototype = new Point;
+    Ball.prototype = new Point;//?
+    Pill.prototype = new Point;//?
     Pill.prototype.randomizeType = function() {
         this.type = Da[Math.round(Math.random() * (Da.length - 1))];
     }
