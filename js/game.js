@@ -10,22 +10,22 @@ const COLOR_1 = "#fc3a9e";
 const T_COLOR = "#3a5afc";
 const M_COLOR = "#fc5f3a";
 const FONT_COLOR = "#000";
-const S_EFFECT_COLOR_1 = "#fc783a";
+const S_EFFECT_COLOR_1 = "rgba(252, 120, 58, 0.7)";
 const S_EFFECT_COLOR_2 = "#ec6319";
 const G_EFFECT_COLOR_1 = "rgba(252, 219, 162, 0.6)";
 const G_EFFECT_COLOR_2 = "rgba(252, 145, 58, 0)";
 
-function suportsLocalStorage() {
+/*function suportsLocalStorage() {
     if (("localStorage" in window) && (null !== window.localStorage))
         return true;
     else return false;
-}
+}*/
 
 class Point {
-    constructor(c, k) {
+    constructor(a, b) {
         this.position = {
-            x: c,
-            y: k
+            x: a,
+            y: b
         }
     }
 
@@ -49,18 +49,18 @@ class Region {//крч, если убрать - то от хвоста оста�
       this.bottom = this.right = 0
   }
 
-  inflate(c, k) {
-      this.left = Math.min(this.left, c);
-      this.top = Math.min(this.top, k);
-      this.right = Math.max(this.right, c);
-      this.bottom = Math.max(this.bottom, k);
+  inflate(a, b) {
+      this.left = Math.min(this.left, a);
+      this.top = Math.min(this.top, b);
+      this.right = Math.max(this.right, a);
+      this.bottom = Math.max(this.bottom, b);
   };
 
-  expand(c, k) {
-      this.left -= c;
-      this.top -= k;
-      this.right += 2 * c;
-      this.bottom += 2 * k;
+  expand(a, b) {
+      this.left -= a;
+      this.top -= b;
+      this.right += 2 * a;
+      this.bottom += 2 * b;
   };
 
   toRectangle() {
@@ -75,38 +75,36 @@ class Region {//крч, если убрать - то от хвоста оста�
 }
 
 var ElkinsWorld = new function() {
-    let ag = 0; let bg = 0;//говнопеременные
-    const M = 60;//?
+    let ag = 0;//говнопеременная
     const lives = 3;//ia
-    const Aa = 120;//?
-    const Da = ["shield", "life", "gravitywarp", "timewarp", "sizewarp"];//для рандомного выпадения плюх
-    const i = { //дефолтные параметры //?
+    const gravity_distance = 120;
+    const pills_types = ["shield", "life", "gravitywarp", "timewarp", "sizewarp"];//для рандомного выпадения плюх
+    const ig = { //дефолтные параметры //?
             x: 0,
             y: 0,
             width: 1000,
             height: 600
         };
-    let world;let b;let level_selector;let start_button;let reset_button = null;
+    let world;let game;let level_selector;let start_button;let reset_button = null;
     let last_results = {
             message: "",
             progress: 0,
             target: 0
         };
-    let u = [];//?
-    let z = [];//?
-    let U = [];//?
-    let aa = [];//?
-    let a = null;//?
-    let E = window.innerWidth - i.width;//?
-    let F = window.innerHeight - i.height;//?
+    let balls = [];
+    let pills = [];
+    let splash = [];
+    let pill_points = [];
+    let obj_prop = null;//?
+    let Eg = window.innerWidth - ig.width;//?
+    let Fg = window.innerHeight - ig.height;//?
     let to_start = false;//s
-    let ma = false;//?
-    let score = 0;//ma
+    let score = 0;
     let start_time = 0;//Q
-    let I = 0;//?
-    let W = [];//?
+    let Ig = 0;//?
+    let Wg = [];//?
     let cur_level = 1;//r
-    let levels/*G*/ = [{ //параметры уровней
+    let levels_prop = [{ //параметры уровней
             factor: 1.2, //скорость
             duration: 300, //продолжительность по времени
             multiplier: 0.5 //на сколько увелисиваются очки
@@ -143,63 +141,59 @@ var ElkinsWorld = new function() {
             duration: 2E3,
             multiplier: 2
         }];
-        let o = {
+        let level_stat = {
             unlockedLevels: 1,
             selectedLevel: 1,
             mute: false
         };
-        let H /**/= {//направление "ветра"
+        let fall_dir= {//направление "ветра"
             x: 0,
             y: 1
         };
-    let  B = {//?
-            fpsMin: 1000,
-            fpsMax: 0
-        };
-        let da = 1000;//?
-        let ea = 0;//?
-        let ha = (new Date).getTime();//?
-        let ga = 0;//?
-        let f = [];//очередная глобальная мусорка?
+        //let da = 10000;//?
+        //let ea = 0;//?
+        //let ha = (new Date).getTime();//?
+        //let ga = 0;//?
+        //let fa = [];//очередная глобальная мусорка?
 
-    function save_to_loc() { //сохранение в локал
+    /*function save_to_loc() { //сохранение в локал
         if(suportsLocalStorage()==true){
-            localStorage.unlockedLevels = o.unlockedLevels;
-            localStorage.selectedLevel = o.selectedLevel;
-            localStorage.mute = o.mute;
+            localStorage.unlockedLevels = level_stat.unlockedLevels;
+            localStorage.selectedLevel = level_stat.selectedLevel;
+            localStorage.mute = level_stat.mute;
         }
-    }
+    }*/
 
     function click_reset() {
-        if(suportsLocalStorage()==true){
+        /*if(suportsLocalStorage()==true){
             localStorage.unlockedLevels = null;
             localStorage.selectedLevel = null;
-            o.unlockedLevels = 1;
-            cur_level = o.selectedLevel = 1;//!
-        }
+            level_stat.unlockedLevels = 1;
+            cur_level = level_stat.selectedLevel = 1;//!
+        }*/
         reset_level_status();
         event.preventDefault();
         alert("Game history was reset.");
     }
 
-    function click_start(h) {
+    function click_start(a) {
         if (false == to_start){
           to_start = true;
-          u = []; z = []; bg = ag = I = score = 0;
-          cur_level = o.selectedLevel;
-          a.trail = [];
-          a.position.x = E;
-          a.position.y = F;
-          a.shield = 0;
-          a.gravity = 0;
-          a.flicker = 0;
-          a.lives = lives-1;
-          a.timewarped = false;
-          a.timefactor = 0;
-          a.sizewarped = false;
-          a.sizefactor = 0;
-          a.gravitywarped = false;
-          a.gravityfactor = 0;
+          balls = []; pills = []; ag = Ig = score = 0;
+          cur_level = level_stat.selectedLevel;
+          obj_prop.trail = [];
+          obj_prop.position.x = Eg;
+          obj_prop.position.y = Fg;
+          obj_prop.shield = 0;
+          obj_prop.gravity = 0;
+          obj_prop.flicker = 0;
+          obj_prop.lives = lives-1;
+          obj_prop.timewarped = false;
+          obj_prop.timefactor = 0;
+          obj_prop.sizewarped = false;
+          obj_prop.sizefactor = 0;
+          obj_prop.gravitywarped = false;
+          obj_prop.gravityfactor = 0;
           start_button.style.display = "none";
           game_status.style.display = "block";
           start_time = (new Date).getTime();
@@ -207,7 +201,7 @@ var ElkinsWorld = new function() {
           level_selector.style.top = "0px";
           world.style.cursor= "default"/*"none"*/;//кастыль
         }
-        h.preventDefault();
+        a.preventDefault();
     }
 
     function death() {//после смерти
@@ -225,8 +219,8 @@ var ElkinsWorld = new function() {
         let a = level_selector.getElementsByTagName("li");
         let c;
         for (let i = 0; i < a.length; i++) {
-            c = i >= o.unlockedLevels ? "locked" : "unlocked";
-            if (i + 1 == o.selectedLevel)
+            c = i >= level_stat.unlockedLevels ? "locked" : "unlocked";
+            if (i + 1 == level_stat.selectedLevel)
                 c = "selected";
             a[i].setAttribute("class", c);
         }
@@ -234,31 +228,39 @@ var ElkinsWorld = new function() {
 
     function setect_level(a) {
         if ("unlocked" == a.target.getAttribute("class")){
-            o.selectedLevel = parseInt(a.target.getAttribute("data-level"));
-            cur_level = o.selectedLevel;
+            level_stat.selectedLevel = parseInt(a.target.getAttribute("data-level"));
+            cur_level = level_stat.selectedLevel;
             reset_level_status();
-            save_to_loc();
+            //save_to_loc();
         }
         a.preventDefault();
     }
 
     function mouse_move(a) {
-        E = a.clientX - 0.5 * (window.innerWidth - i.width) - 6;
-        F = a.clientY - 0.55 * (window.innerHeight - i.height) - 6;
+        Eg = a.clientX - 0.5 * (window.innerWidth - ig.width) - 6;
+        Fg = a.clientY - 0.55 * (window.innerHeight - ig.height) - 6;
     }
 
     function touch_start(a) {
-        1 == a.touches.length && (a.preventDefault(), E = a.touches[0].pageX - 0.5 * (window.innerWidth - i.width), F = a.touches[0].pageY - 0.5 * (window.innerHeight - i.height))
+        if (1 == a.touches.length){
+            a.preventDefault();
+            Eg = a.touches[0].pageX - 0.5 * (window.innerWidth - ig.width);
+            Fg = a.touches[0].pageY - 0.5 * (window.innerHeight - ig.height);
+        }
     }
 
     function touch_move(a) {
-        1 == a.touches.length && (a.preventDefault(), E = a.touches[0].pageX - 0.5 * (window.innerWidth - i.width) - 60, F = a.touches[0].pageY - 0.5 * (window.innerHeight - i.height) - 30)
+        if (1 == a.touches.length){
+            a.preventDefault();
+            Eg = a.touches[0].pageX - 0.5 * (window.innerWidth - ig.width) - 60;
+            Fg = a.touches[0].pageY - 0.5 * (window.innerHeight - ig.height) - 30;
+        }
     }
 
     function set_world_size() {
-        world.width = i.width;
-        world.height = i.height;
-        //Math.max(0.5 * (window.innerHeight - i.height), 5);
+        world.width = ig.width;
+        world.height = ig.height;
+        //Math.max(0.5 * (window.innerHeight - ig.height), 5);
     }
 
     function L(a, b, g) {
@@ -272,12 +274,12 @@ var ElkinsWorld = new function() {
                 y: -4 + 8 * Math.random()
             };
             c.alpha = 1;
-            U.push(c);
+            splash.push(c);
         }
     }
 
-    function V(a, b, c, i) {
-        W.push({
+    function clean_tail_track(a, b, c, i) {
+        Wg.push({
             x: a,
             y: b,
             width: c,
@@ -285,354 +287,323 @@ var ElkinsWorld = new function() {
         })
     }
 
-    function C(a, b, c) {
-        V(a - c, b - c, 2 * c, 2 * c);
+    function clean_balls_track(a, b, c) {
+        clean_tail_track(a - c, b - c, 2 * c, 2 * c);
     }
 
-    function fa() {
-        for (let h = W.length; h--;) {
-            let t = W[h];
-            b.clearRect(Math.floor(t.x), Math.floor(t.y), Math.ceil(t.width), Math.ceil(t.height))
+    function update() {
+      let obj;
+      console.log("update");
+        for (let i = Wg.length; i--;) {
+            game.clearRect(Math.floor(Wg[i].x), Math.floor(Wg[i].y), Math.ceil(Wg[i].width), Math.ceil(Wg[i].height))
         }
-        W = [];
-        let h = (new Date).getTime();
-        ga++;
+        Wg = [];
+        //let h = (new Date).getTime();
+        /*ga++;
         if (h > ha + 1000){
-            B = Math.min(Math.round(1000 * ga / (h - ha)), M);
-            da = Math.min(da, B);
-            ea = Math.max(ea, B);
+            da = Math.min(da, Math.min(Math.round(1000 * ga / (h - ha)), 60));
+            ea = Math.max(ea, Math.min(Math.round(1000 * ga / (h - ha)), 60));
             ha = h;
             ga = 0;
-        }
-        let g = levels[cur_level - 1];
-        let l = levels[cur_level];
-        let tq = g.multiplier;
-        h = g.factor;
-        if((cur_level < levels.length) && to_start == true)
-            h += I / g.duration * (l.factor - g.factor);
-        l = 0.01 + 0.99 * (Math.max(Math.min(B, M), 0) / M);
-        l = l * l * tq || 0.5;
-        let t = H.x * h * (1 - a.timefactor);
-            g = H.y * h * (1 - a.timefactor);
-        let d, j, f;
-        j = 1 == a.flicker % 4 || 2 == a.flicker % 4;
+        }*/
+        let hu = levels_prop[cur_level - 1].factor;
+        if((cur_level < levels_prop.length) && to_start == true)
+            hu += Ig / levels_prop[cur_level - 1].duration * (levels_prop[cur_level].factor - levels_prop[cur_level - 1].factor);
+        let x_fall_coeff = fall_dir.x * hu * (1 - obj_prop.timefactor);
+        let y_fall_coeff = fall_dir.y * hu * (1 - obj_prop.timefactor);
+        let du, ju, fu;
+        ju = 1 == obj_prop.flicker % 4 || 2 == obj_prop.flicker % 4;
         if (to_start) {
-            pp = a.clonePosition();
-            a.position.x += (E - a.position.x) / 4;
-            a.position.y += (F - a.position.y) / 4;
-            score += 0.4 * h * l;
-            score += 0.1 * a.distanceTo(pp) * l;
+            pp = obj_prop.clonePosition();
+            obj_prop.position.x += (Eg - obj_prop.position.x) / 4;
+            obj_prop.position.y += (Fg - obj_prop.position.y) / 4;
+            score += 0.4 * hu;
+            score += 0.1 * obj_prop.distanceTo(pp);
             ag++;
-            a.flicker = Math.max(a.flicker - 1, 0);
-            a.shield = Math.max(a.shield - 1, 0);
-            a.gravity = Math.max(a.gravity - 0.35, 0);
-            //a.timewarped ? (0.5999 < a.timefactor && (a.timewarped = false), a.timefactor += 0.1 * (0.6 - a.timefactor)) : a.timefactor += 0.002 * (0 - a.timefactor);
-            if(a.timewarped){
-                if (0.5999 < a.timefactor)
-                    a.timewarped = false;
-                  a.timefactor += 0.1 * (0.6 - a.timefactor);
+            obj_prop.flicker = Math.max(obj_prop.flicker - 1, 0);
+            obj_prop.shield = Math.max(obj_prop.shield - 1, 0);
+            obj_prop.gravity = Math.max(obj_prop.gravity - 0.35, 0);
+            //obj_prop.timewarped ? (0.5999 < obj_prop.timefactor && (obj_prop.timewarped = false), obj_prop.timefactor += 0.1 * (0.6 - obj_prop.timefactor)) : obj_prop.timefactor += 0.002 * (0 - obj_prop.timefactor);
+            if(obj_prop.timewarped){
+                if (0.5999 < obj_prop.timefactor)
+                    obj_prop.timewarped = false;
+                  obj_prop.timefactor += 0.1 * (0.6 - obj_prop.timefactor);
             }
-            else a.timefactor += 0.002 * (0 - a.timefactor);
-            a.timefactor = Math.max(Math.min(a.timefactor, 1), 0);
-            //a.sizewarped ? (0.5999 < a.sizefactor && (a.sizewarped = false), a.sizefactor += 0.04 * (0.6 - a.sizefactor)) : a.sizefactor += 0.01 * (0 - a.sizefactor);
-            if(a.sizewarped){
-                if(0.5999 < a.sizefactor){
-                    a.sizewarped = false;
+            else obj_prop.timefactor += 0.002 * (0 - obj_prop.timefactor);
+            obj_prop.timefactor = Math.max(Math.min(obj_prop.timefactor, 1), 0);
+            //obj_prop.sizewarped ? (0.5999 < obj_prop.sizefactor && (obj_prop.sizewarped = false), obj_prop.sizefactor += 0.04 * (0.6 - obj_prop.sizefactor)) : obj_prop.sizefactor += 0.01 * (0 - obj_prop.sizefactor);
+            if(obj_prop.sizewarped){
+                if(0.5999 < obj_prop.sizefactor){
+                    obj_prop.sizewarped = false;
                 }
-                a.sizefactor += 0.04 * (0.6 - a.sizefactor);
+                obj_prop.sizefactor += 0.04 * (0.6 - obj_prop.sizefactor);
             }
-            else a.sizefactor += 0.01 * (0 - a.sizefactor);
-            a.sizefactor = Math.max(Math.min(a.sizefactor, 1), 0);
-            //a.gravitywarped ? (0.99995 < a.gravityfactor && (a.gravitywarped = false), a.gravityfactor += 0.04 * (1 - a.gravityfactor)) : (0.12 > a.gravityfactor && (a.gravityfactor = 0), a.gravityfactor += 0.014 * (0 - a.gravityfactor));
-            if(a.gravitywarped){
-                if(0.99995 < a.gravityfactor)
-                    a.gravitywarped = false;
-                a.gravityfactor += 0.04 * (1 - a.gravityfactor);
+            else obj_prop.sizefactor += 0.01 * (0 - obj_prop.sizefactor);
+            obj_prop.sizefactor = Math.max(Math.min(obj_prop.sizefactor, 1), 0);
+            //obj_prop.gravitywarped ? (0.99995 < obj_prop.gravityfactor && (obj_prop.gravitywarped = false), obj_prop.gravityfactor += 0.04 * (1 - obj_prop.gravityfactor)) : (0.12 > obj_prop.gravityfactor && (obj_prop.gravityfactor = 0), obj_prop.gravityfactor += 0.014 * (0 - obj_prop.gravityfactor));
+            if(obj_prop.gravitywarped){
+                if(0.99995 < obj_prop.gravityfactor)
+                    obj_prop.gravitywarped = false;
+                obj_prop.gravityfactor += 0.04 * (1 - obj_prop.gravityfactor);
             }
             else {
-                if(0.12 > a.gravityfactor)
-                    a.gravityfactor = 0;
-                a.gravityfactor += 0.014 * (0 - a.gravityfactor);
+                if(0.12 > obj_prop.gravityfactor)
+                    obj_prop.gravityfactor = 0;
+                obj_prop.gravityfactor += 0.014 * (0 - obj_prop.gravityfactor);
             }
-            a.gravityfactor = Math.max(Math.min(a.gravityfactor, 1), 0);
-            if (0 < a.shield && (100 < a.shield || 0 != a.shield % 3)){
-                d = a.size * (Math.min(a.shield, 100) / 50);
-                b.beginPath();
-                b.fillStyle = S_EFFECT_COLOR_1;
-                b.strokeStyle = S_EFFECT_COLOR_2;
-                b.arc(a.position.x,a.position.y, d, 0, 2 * Math.PI, true);
-                b.fill();
-                b.stroke();
-                C(a.position.x, a.position.y, d + 2);
+            obj_prop.gravityfactor = Math.max(Math.min(obj_prop.gravityfactor, 1), 0);
+            if (0 < obj_prop.shield && (100 < obj_prop.shield || 0 != obj_prop.shield % 3)){
+                du = obj_prop.size * (Math.min(obj_prop.shield, 100) / 50);
+                game.beginPath();
+                game.fillStyle = S_EFFECT_COLOR_1;
+                game.strokeStyle = S_EFFECT_COLOR_2;
+                game.arc(obj_prop.position.x,obj_prop.position.y, du, 0, 2 * Math.PI, true);
+                game.fill();
+                game.stroke();
+                clean_balls_track(obj_prop.position.x, obj_prop.position.y, du + 2);
             }
-            if(0 < a.gravityfactor){
-                f = a.gravityfactor * Aa;
-                d = b.createRadialGradient(a.position.x, a.position.y, 0, a.position.x, a.position.y, f);
-                d.addColorStop(0.1, G_EFFECT_COLOR_1);
-                d.addColorStop(0.8, G_EFFECT_COLOR_2);
-                b.beginPath();
-                b.fillStyle = d;
-                b.arc(a.position.x, a.position.y, f, 0, 2 * Math.PI, true);
-                b.fill();
-                C(a.position.x, a.position.y, f);
+            if(0 < obj_prop.gravityfactor){
+                fu = obj_prop.gravityfactor * gravity_distance;
+                du = game.createRadialGradient(obj_prop.position.x, obj_prop.position.y, 0, obj_prop.position.x, obj_prop.position.y, fu);
+                du.addColorStop(0.1, G_EFFECT_COLOR_1);
+                du.addColorStop(0.8, G_EFFECT_COLOR_2);
+                game.beginPath();
+                game.fillStyle = du;
+                game.arc(obj_prop.position.x, obj_prop.position.y, fu, 0, 2 * Math.PI, true);
+                game.fill();
+                clean_balls_track(obj_prop.position.x, obj_prop.position.y, fu);
             }
-            for (; 60 > a.trail.length - 1;)
-                a.trail.push(new Point(a.position.x, a.position.y));
-            b.beginPath();
-            b.strokeStyle = j ? "#333333" : TAIL_COLOR;
-            b.lineWidth = 2;//толщина хвостика
-            var q = new Region;
-            d = 0;
-            for (f = a.trail.length; d < f; d++){
-                p = a.trail[d];//trail
-                /*0 == d ? b.moveTo(p.position.x, p.position.y) : a.trail[d + 1] && b.quadraticCurveTo(p.position.x, p.position.y, p.position.x + (a.trail[d + 1].position.x - p.position.x) / 2, p.position.y + (a.trail[d + 1].position.y - p.position.y) / 2),
-                q.inflate(p.position.x, p.position.y), p.position.x += t, p.position.y += g;*/
-                if(0 == d)
-                    b.moveTo(p.position.x, p.position.y);
-                if (a.trail[d + 1]) {
-                    b.quadraticCurveTo(p.position.x, p.position.y, p.position.x + (a.trail[d + 1].position.x - p.position.x) / 2, p.position.y + (a.trail[d + 1].position.y - p.position.y) / 2);
-                    q.inflate(p.position.x, p.position.y);
-                    p.position.x += t;
-                    p.position.y += g;
+            for (; 60 > obj_prop.trail.length - 1;)
+                obj_prop.trail.push(new Point(obj_prop.position.x, obj_prop.position.y));
+            game.beginPath();
+            game.strokeStyle = ju ? "#333333" : TAIL_COLOR;
+            game.lineWidth = 3;//толщина хвостика
+            let region = new Region;
+            du = 0;
+            for (fu = obj_prop.trail.length; du < fu; du++){
+                obj = obj_prop.trail[du];//trail
+                /*0 == du ? game.moveTo(obj.position.x, obj.position.y) : obj_prop.trail[du + 1] && game.quadraticCurveTo(obj.position.x, obj.position.y, obj.position.x + (obj_prop.trail[du + 1].position.x - obj.position.x) / 2, obj.position.y + (obj_prop.trail[du + 1].position.y - obj.position.y) / 2),
+                region.inflate(obj.position.x, obj.position.y), obj.position.x += x_fall_coeff, obj.position.y += y_fall_coeff;*/
+                if(0 == du)
+                    game.moveTo(obj.position.x, obj.position.y);
+                if (obj_prop.trail[du + 1]) {
+                    game.quadraticCurveTo(obj.position.x, obj.position.y, obj.position.x + (obj_prop.trail[du + 1].position.x - obj.position.x) / 2, obj.position.y + (obj_prop.trail[du + 1].position.y - obj.position.y) / 2);
+                    region.inflate(obj.position.x, obj.position.y);
+                    obj.position.x += x_fall_coeff;
+                    obj.position.y += y_fall_coeff;
                 }
             }
-            q.expand(10, 10);
-            d = q.toRectangle();
-            V(d.x, d.y, d.width, d.height);
-            b.stroke();
-            b.closePath();
-            f = 0;
-            for (d = a.trail.length - 1; 0 < d; d--) {
-                p = a.trail[d];
-                if (d == Math.round(51) || d == Math.round(45) || d == Math.round(39)){
-                    b.beginPath();
-                    b.lineWidth = 0.5;
-                    b.fillStyle = j ? DEATH_COLOR : CHILD_COLOR;
-                    b.arc(p.position.x, p.position.y, 2.5, 0, 2 * Math.PI, true);
-                    b.fill();
-                    C(p.position.x, p.position.y, 8);
-                    f++;
+            region.expand(10, 10);
+            du = region.toRectangle();
+            clean_tail_track(du.x, du.y, du.width, du.height);
+            game.stroke();
+            game.closePath();
+            fu = 0;
+            for (du = obj_prop.trail.length - 1; 0 < du; du--) {
+                obj = obj_prop.trail[du];
+                if (du == Math.round(51) || du == Math.round(45) || du == Math.round(39)){
+                    game.beginPath();
+                    game.lineWidth = 0.5;
+                    game.fillStyle = ju ? DEATH_COLOR : CHILD_COLOR;
+                    game.arc(obj.position.x, obj.position.y, 2.5, 0, 2 * Math.PI, true);
+                    game.fill();
+                    clean_balls_track(obj.position.x, obj.position.y, 8);
+                    fu++;
                 }
-                if (f == a.lives) break
+                if (fu == obj_prop.lives) break;
             }
-            if (60 < a.trail.length) a.trail.shift();
-            b.beginPath();
-            b.fillStyle = j ? DEATH_COLOR : HEAD_COLOR;
-            b.arc(a.position.x, a.position.y, a.size / 2, 0, 2 * Math.PI, true);
-            b.fill();
-            C(a.position.x, a.position.y, a.size + 6);
+            if (60 < obj_prop.trail.length) obj_prop.trail.shift();
+            game.beginPath();
+            game.fillStyle = ju ? DEATH_COLOR : HEAD_COLOR;
+            game.arc(obj_prop.position.x, obj_prop.position.y, obj_prop.size / 2, 0, 2 * Math.PI, true);
+            game.fill();
+            clean_balls_track(obj_prop.position.x, obj_prop.position.y, obj_prop.size + 6);
         }
-        if (to_start && (0 > a.position.x || a.position.x > i.width || 0 > a.position.y || a.position.y > i.height)){//выход за пределы
-            L(a.position, 10);
+        if (to_start && (0 > obj_prop.position.x || obj_prop.position.x > ig.width || 0 > obj_prop.position.y || obj_prop.position.y > ig.height)){//выход за пределы
+            L(obj_prop.position, 10);
             death();
         }
-        for (d = 0; d < u.length; d++) {
-            p = u[d];
-            p.size = p.originalSize * (1 - a.sizefactor);
-            p.offset.x *= 0.95;
-            p.offset.y *= 0.95;
-            j = p.distanceTo(a.position);
+        for (du = 0; du < balls.length; du++) {
+            obj = balls[du];
+            obj.size = obj.originalSize * (1 - obj_prop.sizefactor);
+            obj.offset.x *= 0.95;
+            obj.offset.y *= 0.95;
+            ju = obj.distanceTo(obj_prop.position);
             if (to_start)
-                if (0 < a.gravityfactor) {
-                    q = Math.atan2(p.position.y - a.position.y, p.position.x - a.position.x);
-                    f = a.gravityfactor * Aa;
-                    if(j < f) {
-                        p.offset.x += 0.2 * (Math.cos(q) * (f - j) - p.offset.x);
-                        p.offset.y += 0.2 * (Math.sin(q) * (f - j) - p.offset.y);
+                if (0 < obj_prop.gravityfactor) {
+                    let q = Math.atan2(obj.position.y - obj_prop.position.y, obj.position.x - obj_prop.position.x);
+                    fu = obj_prop.gravityfactor * gravity_distance;
+                    if(ju < fu) {
+                        obj.offset.x += 0.2 * (Math.cos(q) * (fu - ju) - obj.offset.x);
+                        obj.offset.y += 0.2 * (Math.sin(q) * (fu - ju) - obj.offset.y);
                     }
                 }else
-                    if (0 < a.shield && j < 0.5 * (4 * a.size + p.size)) {
-                        L(p.position, 10);
-                        u.splice(d, 1);
-                        d--;
-                        score += 20 * l;
-                        bg += 20 * l;
-                        X(Math.ceil(20 * l), p.clonePosition(), p.force);
+                    if (0 < obj_prop.shield && ju < 0.5 * (4 * obj_prop.size + obj.size)) {
+                        L(obj.position, 10);
+                        balls.splice(du, 1);
+                        du--;
+                        score += 20;
+                        push_pill_points(Math.ceil(20), obj.clonePosition(), obj.force);
                         continue
                     } else
-                          if (j < 0.5 * (a.size + p.size) && 0 == a.flicker){
-                              if (0 < a.lives){
-                                  L(a.position, 4);
-                                  a.lives--;
-                                  a.flicker += 60;
-                                  u.splice(d, 1);
-                                  d--;
+                          if (ju < 0.5 * (obj_prop.size + obj.size) && 0 == obj_prop.flicker){
+                              if (0 < obj_prop.lives){
+                                  L(obj_prop.position, 4);
+                                  obj_prop.lives--;
+                                  obj_prop.flicker += 60;
+                                  balls.splice(du, 1);
+                                  du--;
                               }
                               else {
-                                  L(a.position, 10);
+                                  L(obj_prop.position, 10);
                                   death();
                               }
                           }
-            b.beginPath();
-            b.fillStyle = POINT_COLOR;
-            b.arc(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size / 2, 0, 2 * Math.PI, true);//форма поинта
-            b.fill();
-            C(p.position.x + p.offset.x, p.position.y + p.offset.y, p.size);
-            p.position.x += t * p.force;//направление движения точек
-            p.position.y += g * p.force;
-            if (p.position.x < -p.size || p.position.y > i.height + p.size){
-                u.splice(d, 1);
-                d--;
-                if(to_start) I++;
+            game.beginPath();
+            game.fillStyle = POINT_COLOR;
+            game.arc(obj.position.x + obj.offset.x, obj.position.y + obj.offset.y, obj.size / 2, 0, 2 * Math.PI, true);//форма поинта
+            game.fill();
+            clean_balls_track(obj.position.x + obj.offset.x, obj.position.y + obj.offset.y, obj.size);
+            obj.position.x += x_fall_coeff * obj.force;//направление движения точек
+            obj.position.y += y_fall_coeff * obj.force;
+            if (obj.position.x < -obj.size || obj.position.y > ig.height + obj.size){
+                balls.splice(du, 1);
+                du--;
+                if(to_start) Ig++;
             }
         }
-        for (d = 0; d < z.length; d++) {
-            p = z[d];
-            if (p.distanceTo(a.position) < 0.5 * (a.size + p.size) && to_start) {
-                if (p.type == "shield")
-                    a.shield = 300;
+        for (du = 0; du < pills.length; du++) {
+            obj = pills[du];
+            if (obj.distanceTo(obj_prop.position) < 0.5 * (obj_prop.size + obj.size) && to_start) {
+                if (obj.type == "shield")
+                    obj_prop.shield = 300;
                 else
-                    if(p.type == "life"){
-                        if(a.lives < lives){//чтобы жизней не было больше 3х
-                            X("+1HP", p.clonePosition(), p.force);
-                            a.lives = Math.min(a.lives + 1, lives);
+                    if(obj.type == "life"){
+                        if(obj_prop.lives < lives){//чтобы жизней не было больше 3х
+                            push_pill_points("+1HP", obj.clonePosition(), obj.force);
+                            obj_prop.lives = Math.min(obj_prop.lives + 1, lives);
                         }
                     }
                     else
-                        if(p.type == "gravitywarp")
-                            a.gravitywarped = true;
+                        if(obj.type == "gravitywarp")
+                            obj_prop.gravitywarped = true;
                         else
-                            if (p.type == "timewarp")
-                                a.timewarped = true;
+                            if (obj.type == "timewarp")
+                                obj_prop.timewarped = true;
                             else
-                                if (p.type == "sizewarp")
-                                    a.sizewarped = true;
+                                if (obj.type == "sizewarp")
+                                    obj_prop.sizewarped = true;
 
-                if(p.type != "life"){
-                    score += 50 * l;
-                    bg += 50 * l;
-                    X(Math.ceil(50 * l), p.clonePosition(), p.force);
+                if(obj.type != "life"){
+                    score += 50;
+                    push_pill_points(Math.ceil(50), obj.clonePosition(), obj.force);
                 }
-                for (j = 0; j < u.length; j++) {
-                    e = u[j];
-                    if(100 > e.distanceTo(p.position)){ //в каком радиусе умирают шарики
+                for (ju = 0; ju < balls.length; ju++) {
+                    e = balls[ju];
+                    if(100 > e.distanceTo(obj.position)){ //в каком радиусе умирают шарики
                         L(e.position, 10);
-                        u.splice(j, 1);
-                        j--;
-                        score += 20 * l;
-                        bg += 20 * l;
-                        X(Math.ceil(20 * l), e.clonePosition(), e.force);
+                        balls.splice(ju, 1);
+                        ju--;
+                        score += 20;
+                        push_pill_points(Math.ceil(20), e.clonePosition(), e.force);
                     }
                 }
-                z.splice(d, 1);
-                d--;
+                pills.splice(du, 1);
+                du--;
             } else
-                if (p.position.x < -p.size || p.position.y > i.height + p.size){
-                    z.splice(d, 1);
-                    d--;
+                if (obj.position.x < -obj.size || obj.position.y > ig.height + obj.size){
+                    pills.splice(du, 1);
+                    du--;
                 }
-            j = "";
-            f = DEFAULT_COLOR;
-            if(p.type === "shield"){
-                j = "S";
-                f = S_COLOR;
+            ju = "";
+            fu = DEFAULT_COLOR;
+            if(obj.type === "shield"){
+                ju = "S";
+                fu = S_COLOR;
             }
             else
-                if (p.type === "life"){
-                    j = "1";
-                    f = COLOR_1;
+                if (obj.type === "life"){
+                    ju = "1";
+                    fu = COLOR_1;
                 }
                 else
-                    if(p.type === "gravitywarp"){
-                        j = "G";
-                        f = G_COLOR;
+                    if(obj.type === "gravitywarp"){
+                        ju = "G";
+                        fu = G_COLOR;
                     }
                     else
-                        if (p.type === "timewarp"){
-                            j = "T";
-                            f = T_COLOR;
+                        if (obj.type === "timewarp"){
+                            ju = "T";
+                            fu = T_COLOR;
                         }
                         else
-                            if(p.type === "sizewarp"){
-                                j = "M";
-                                f = M_COLOR;
+                            if(obj.type === "sizewarp"){
+                                ju = "M";
+                                fu = M_COLOR;
                             }
-            b.beginPath();
-            b.fillStyle = f;
-            b.arc(p.position.x, p.position.y, p.size / 2, 0, 2 * Math.PI, true);
-            b.fill();
-            b.save();
-            b.font = "bold 12px Arial";
-            b.fillStyle = FONT_COLOR;
-            b.fillText(j, p.position.x - 0.5 * b.measureText(j).width, p.position.y + 4);
-            b.restore();
-            C(p.position.x, p.position.y, p.size);
-            p.position.x += t * p.force;
-            p.position.y += g * p.force;
+            game.beginPath();
+            game.fillStyle = fu;
+            game.arc(obj.position.x, obj.position.y, obj.size / 2, 0, 2 * Math.PI, true);
+            game.fill();
+            game.save();
+            game.font = "bold 12px Arial";
+            game.fillStyle = FONT_COLOR;
+            game.fillText(ju, obj.position.x - 0.5 * game.measureText(ju).width, obj.position.y + 4);
+            game.restore();
+            clean_balls_track(obj.position.x, obj.position.y, obj.size);
+            obj.position.x += x_fall_coeff * obj.force;
+            obj.position.y += y_fall_coeff * obj.force;
         }
-        if(u.length < 27 * h)
-            u.push(Ba(new Ball));
-        if (1 > z.length && 0.994 < Math.random() && false == a.isBoosted()) {
-            for (h = new Pill; h.type == "life" && a.lives >= lives;)
-                h.randomizeType();
-            z.push(Ba(h))
+        if(balls.length < 27 * hu)
+            balls.push(points_coordinates(new Ball));
+        if (1 > pills.length && 0.994 < Math.random() && false == obj_prop.isBoosted()) {
+            for (hu = new Pill; hu.type == "life" && obj_prop.lives >= lives;)
+                hu.randomizeType();
+            pills.push(points_coordinates(hu))
         }
-        //1 == a.shield && to_start; //что за дичь?
-        for (d = 0; d < U.length; d++){
-            p = U[d];
-            p.velocity.x += 0.04 * (tq - p.velocity.x);
-            p.velocity.y += 0.04 * (g - p.velocity.y);
-            p.position.x += p.velocity.x;
-            p.position.y += p.velocity.y;
-            p.alpha -= 0.02;
-            b.fillStyle ="rgba(255,255,255," + Math.max(p.alpha, 0) + ")";//цвет всплесков
-            b.fillRect(p.position.x, p.position.y, 1, 1);
-            C(p.position.x, p.position.y, 2);
-            if (0 >= p.alpha)
-                U.splice(d, 1);
+        //1 == obj_prop.shield && to_start; //что за дичь?
+        for (du = 0; du < splash.length; du++){
+            obj = splash[du];
+            obj.velocity.x += 0.04 * (levels_prop[cur_level - 1].multiplier - obj.velocity.x);
+            obj.velocity.y += 0.04 * (y_fall_coeff - obj.velocity.y);
+            obj.position.x += obj.velocity.x;
+            obj.position.y += obj.velocity.y;
+            obj.alpha -= 0.02;
+            game.fillStyle ="rgba(255,255,255," + Math.max(obj.alpha, 0) + ")";//цвет всплесков
+            game.fillRect(obj.position.x, obj.position.y, 1, 1);
+            clean_balls_track(obj.position.x, obj.position.y, 2);
+            if (0 >= obj.alpha)
+                splash.splice(du, 1);
         }
-        for (d = 0; d < aa.length; d++){
-            p = aa[d];
-            p.position.x += t * p.force;
-            p.position.y += g * p.force;
-            p.position.y -= 1;
-            h = b.measureText(p.text).width;
-            l = p.position.x - 0.5 * h;
-            b.save();
-            b.font = "10px Arial";
-            b.fillStyle = "rgba( 255, 255, 255, " + p.alpha + " )";//цвет очков
-            b.fillText(p.text, l, p.position.y);
-            b.restore();
-            V(l - 5, p.position.y - 12, h + 8, 22);
-            p.alpha *= 0.96;
-            if(0.05 > p.alpha){
-                aa.splice(d, 1);
-                d--;
+        for (du = 0; du < pill_points.length; du++){
+            obj = pill_points[du];
+            obj.position.x += x_fall_coeff * obj.force;
+            obj.position.y = (obj.position.y + y_fall_coeff * obj.force) - 1;
+            hu = game.measureText(obj.text).width;
+            game.save();
+            game.font = "10px Arial";
+            game.fillStyle = "rgba( 255, 255, 255, " + obj.alpha + " )";//цвет очков когда съел конфетку
+            game.fillText(obj.text, obj.position.x - 0.5 * hu, obj.position.y);
+            game.restore();
+            clean_tail_track(obj.position.x - 0.5 * hu - 5, obj.position.y - 12, hu + 8, 22);
+            obj.alpha *= 0.96;
+            if(0.05 > obj.alpha){
+                pill_points.splice(du, 1);
+                du--;
             }
-        }
-        if(last_results.message && "" !== last_results.message){
-            last_results.progress += 0.05 * (last_results.target - last_results.progress);
-            if( 0.9999999 < last_results.progress)
-                last_results.target = 0
-            else
-                if( 0 == last_results.target && 0.05 > last_results.progress)
-                    last_results.message = "";
-            b.save();
-            b.font = "bold 22px Arial";
-            p = {
-                x: i.width - b.measureText(last_results.message).width - 15,
-                y: i.height + 40 - 55 * last_results.progress
-            };
-            b.translate(p.x, p.y);
-            b.fillStyle = "rgba( 0, 0, 0, " + 0.4 * last_results.progress + " )";//цвет фона уровня
-            b.fillRect(-15, -30, 200, 100);
-            b.fillStyle = "rgba( 255, 255, 255, " + last_results.progress + " )";
-            b.fillText(last_results.message, 0, 0);
-            V(p.x - 15, p.y - 30, 200, 100);
-            b.restore();
         }
         if (to_start) {
-            if (h = I > levels[cur_level - 1].duration)
-                if (cur_level < levels.length){
+            if (hu = Ig > levels_prop[cur_level - 1].duration)
+                if (cur_level < levels_prop.length){
                     cur_level++;
-                    I = 0;
-                    o.unlockedLevels = Math.max(o.unlockedLevels, cur_level);
-                    save_to_loc();
+                    Ig = 0;
+                    level_stat.unlockedLevels = Math.max(level_stat.unlockedLevels, cur_level);
+                    level_stat.selectedLevel = cur_level;
+                    //save_to_loc();
                     reset_level_status();
-                    h = true;
-                } else h = false;
-            if(h){
-                last_results.message = "LEVEL " + cur_level + "!";
+                    hu = true;
+                } else hu = false;
+            if(hu){
                 last_results.progress = 0;
                 last_results.target = 1;
             }
@@ -641,11 +612,11 @@ var ElkinsWorld = new function() {
             scoreText += " Time <span>" + Math.round(100 * (((new Date).getTime() - start_time) / 1000)) / 100 + "s</span>";
             game_status.innerHTML = scoreText;
         }
-        ma || requestAnimFrame(fa);
+        requestAnimFrame(update);
     }
 
-    function X(a, b, c) {
-        aa.push({
+    function push_pill_points(a, b, c) {
+        pill_points.push({
             text: a,
             position: {
                 x: b.x,
@@ -656,14 +627,14 @@ var ElkinsWorld = new function() {
         })
     }
 
-    function Ba(a) {
+    function points_coordinates(a) {
         if(0.5 < Math.random()){
-            a.position.x = Math.random() * i.width;
-            a.position.y = -20;
+            a.position.x = Math.random() * ig.width;
+            a.position.y = -10;
         }
         else {
-            a.position.x = i.width + 20
-            a.position.y = 0.2 * -i.height + 1.2 * Math.random() * i.height;
+            a.position.x = ig.width + 10
+            a.position.y = 0.2 * -ig.height + 1.2 * Math.random() * ig.height;
         }
         return a;
     }
@@ -717,38 +688,38 @@ var ElkinsWorld = new function() {
         start_button = document.getElementById("start-button");//Ea
         reset_button = document.getElementById("reset-button");//Fa
         if (world && world.getContext) {
-            b = world.getContext("2d");//b
+            game = world.getContext("2d");//b
             document.addEventListener("mousemove", mouse_move, false);//Ua
             world.addEventListener("touchstart", touch_start, false);//Xa
             document.addEventListener("touchmove", touch_move, false);//Ya
             start_button.addEventListener("click", click_start, false);
             reset_button.addEventListener("click", click_reset, false);
             window.addEventListener("resize", set_world_size, false);
-            if (suportsLocalStorage()) {
+            /*if (suportsLocalStorage()) {
                 var c = parseInt(localStorage.unlockedLevels),
-                    f = parseInt(localStorage.selectedLevel),
+                    fk = parseInt(localStorage.selectedLevel),
                     g = localStorage.mute;
-                c && (o.unlockedLevels = c);
-                f && (o.selectedLevel = f);
-                g && (o.mute = "true" == g);
-            }
-            g = "";
+                c && (level_stat.unlockedLevels = c);
+                fk && (level_stat.selectedLevel = fk);
+                g && (level_stat.mute = "true" == g);
+            }*/
+            let g = "";
             c = 1;
-            for (f = levels.length; c <= f; c++)
+            for (let i = levels_prop.length; c <= i; c++)
                 g += '<li data-level="' + c + '">' + c + "</li>";
             level_selector.getElementsByTagName("ul")[0].innerHTML = g;
             g = level_selector.getElementsByTagName("li");
             c = 0;
-            for (f = g.length; c < f; c++)
+            for (let i = g.length; c < i; c++)
                 g[c].addEventListener("click", setect_level, false);
             reset_level_status();
-            a = new initial_values;
+            obj_prop = new initial_values;
             set_world_size();
-            //game_status.style.width = i.width + "px";
+            //game_status.style.width = ig.width + "px";
             //world.style.border = "none";
-            H.x *= 2;
-            H.y *= 2;
-            fa();
+            fall_dir.x *= 2;
+            fall_dir.y *= 2;
+            update();
             world.style.display = "block";
             start_button.style.display = "block";
         }
@@ -761,7 +732,7 @@ var ElkinsWorld = new function() {
     Ball.prototype = new Point;//?
     Pill.prototype = new Point;//?
     Pill.prototype.randomizeType = function() {
-        this.type = Da[Math.round(Math.random() * (Da.length - 1))];
+        this.type = pills_types[Math.round(Math.random() * (pills_types.length - 1))];
     }
 };
 
