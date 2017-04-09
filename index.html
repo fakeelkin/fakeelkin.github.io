@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <title>Elkin's Game</title>
+        <link href="css/index.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header">
+				<h1>Elkin's game</h1>
+				<a id="play" href="game.html">Play game</a>
+			</div>
+			<div id="container">
+				<div class="sliderbutton" id="slideleft" onclick="slideshow.move(-1)"></div>
+				<div id="slider" style="overflow: hidden;">
+					<ul style="left: -990px; width: 3960px;">
+						<li><img src="img/1.jpg" width="990" height="428"></li>
+						<li><img src="img/2.jpg" width="990" height="428"></li>
+						<li><img src="img/3.jpg" width="990" height="428"></li>
+						<li><img src="img/4.jpg" width="990" height="428"></li>
+					</ul>
+				</div>
+				<div class="sliderbutton" id="slideright" onclick="slideshow.move(1)"></div>
+					<ul id="pagination" class="pagination">
+						<li onclick="slideshow.pos(0)" class="current"></li>
+						<li onclick="slideshow.pos(1)" class=""></li>
+						<li onclick="slideshow.pos(2)" class=""></li>
+						<li onclick="slideshow.pos(3)" class=""></li>
+					</ul>
+			</div>
+			<p id="info">
+				Info about game (paru sentences)
+			</p>
+			<img id="control" src="img/mouse.png">
+			<p id="cntrl">
+				Use mouse to control your point 
+			</p>
+		</div>
+		<img class="bg" src="img/bg.png"> 
+		<script type="text/javascript">
+			var slideshow=new TINY.slider.slide('slideshow',{
+				id:'slider',
+				auto:8,
+				resume:false,
+				vertical:false,
+				navid:'pagination',
+				activeclass:'current',
+				position:0,
+				rewind:false,
+				elastic:true,
+				left:'slideleft',
+				right:'slideright'
+			});
+		</script>  			
+	</body>
+</html>

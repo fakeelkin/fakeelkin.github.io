@@ -1,0 +1,178 @@
+html {
+	background: linear-gradient(to top, #d1f9fb, #b6f7fa);;
+	background-size: 100%;
+	font-family: "HelveticaNeue-Thin","Helvetica Neue Thin", Helvetica;
+}
+
+.bg {
+    z-index: -100;
+    bottom: 0px;
+	width: 100%;
+	position: fixed;
+    left: 0px;
+}
+
+#header {
+    margin-top: 0;
+    padding-top: 0;
+    width: 990px;
+    display: inline-flex;
+    background-color: rgba(0,0,0,0.3);
+    left: 50%;  
+    height: 50px;
+    position: absolute;  
+    margin-left: -495px; 
+}
+
+#play {
+    right: 0px;
+    height: 50px;
+    width: 300px;
+    text-align: center;
+    font-size: 30pt;
+    text-decoration: none;
+    color: #000;
+    transition: color 1s;
+    margin-left: 490px;
+}
+
+#play:hover {
+    color: #a0a0a0;
+    transition: color 1s;
+}
+
+h1 {
+    margin-top: 8px;
+    margin-left: 5px;
+}
+
+p {
+    width: 990px;
+    left: 50%;   
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    min-height: 50px;
+    position: absolute;  
+    margin-left: -495px;
+    text-align: center;
+    padding: 20px;
+}
+
+#wrapper {
+    background: rgba(0,0,0,0.3);
+    height: 100%;
+    width: 990px;
+    z-index: 100;
+    position: absolute;
+    margin-left: -495px;
+    left: 50%;
+}
+
+#info {
+    margin-top: 50px; 
+}
+
+#cntrl {
+    margin-top: 300px; 
+}
+
+#control {
+    height: 200px;
+    left: 50%;   
+    color: #fff;
+    position: absolute;  
+    margin-left: -100px;
+    margin-top: 100px;
+}
+
+#slider li,.content {
+    width:990px;
+}
+
+.sliderbutton,.pagination li {
+    cursor:pointer;
+}
+
+#slider {
+    border: 1px solid #000;
+    position:relative;
+    overflow:auto;
+    border-left:1px #a0a0a0 solid;
+    border-right:1px #a0a0a0 solid;
+    width:988px;
+    left: 50%;
+    margin-left: -495px;
+    margin-top: 50px;
+}
+
+#container {
+    height:428px;
+}
+
+#slider ul,.pagination {
+    position:absolute;
+}
+
+.sliderbutton,#slider,#slider li,.pagination li {
+    float:left;
+}
+
+.sliderbutton,#slider,#slider li {
+    height:428px;
+}
+
+.sliderbutton {
+    width:25px;
+}
+
+#slider ul {
+    left:0;
+    top:0
+}
+
+#slider ul,.pagination {
+    list-style:none
+}
+
+#slider ul {
+    margin:0
+}
+
+#slider ul {
+    padding:0
+}
+
+.pagination {
+    height:25px;
+    left: 50%;
+    top:440px;
+    margin-left: -65px;
+}
+
+.pagination li {
+    background:#ccc;
+    border:1px solid #fff;
+    height:8px;
+    margin:0 4px 0 0;
+    width:8px
+}
+
+li.current,.pagination li:hover {
+    background:#fff
+}
+
+#slideleft {
+    width:0px
+}
+
+#slideright {
+    width:0px
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
